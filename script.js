@@ -177,6 +177,8 @@ function getBotResponse(message) {
     return "Halo! Ada yang bisa saya bantu?";
   } else if (lowerMessage.includes("pendaftaran") || lowerMessage.includes("daftar")) {
     return "Informasi pendaftaran siswa baru bisa Anda temukan di menu Pendaftaran atau dengan mengunjungi link ini: [Link Pendaftaran]";
+  } else if (lowerMessage.includes("tanya") || lowerMessage.includes("ada")) {
+    return "silakan ingin bertanya tentang apa?";
   } else if (lowerMessage.includes("kalender") || lowerMessage.includes("jadwal")) {
     return "Kalender akademik sekolah bisa dilihat di menu Kalender pada website kami.";
   } else if (lowerMessage.includes("alamat") || lowerMessage.includes("lokasi")) {
