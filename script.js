@@ -173,7 +173,7 @@ function addMessage(text, sender) {
 function getBotResponse(message) {
   const lowerMessage = message.toLowerCase();
 
-  if (lowerMessage.includes("halo") || lowerMessage.includes("hai") || lowerMessage.includes("hi")) {
+  if (lowerMessage.includes("halo") || lowerMessage.includes("hai") || lowerMessage.includes("hi") || lowerMessage.includes("hallo" || lowerMessage.includes("aku mau tanya"))) {
     return "Halo! Ada yang bisa saya bantu?";
   } else if (lowerMessage.includes("pendaftaran") || lowerMessage.includes("daftar")) {
     return "Informasi pendaftaran siswa baru bisa Anda temukan di menu Pendaftaran atau dengan mengunjungi link ini: [Link Pendaftaran]";
@@ -183,10 +183,11 @@ function getBotResponse(message) {
     return "SMP Negeri 1 Maju Jaya berlokasi di Jl. Pendidikan No. 123, Kota Maju Jaya. Lihat peta di footer website.";
   } else if (lowerMessage.includes("terima kasih") || lowerMessage.includes("thanks")) {
     return "Sama-sama! Jika ada pertanyaan lain, jangan ragu untuk bertanya.";
+  } else if (lowerMessage.includes("Bagus") || lowerMessage.includes("makasih")) {
+    return "Sama-sama! Jika ada pertanyaan lain, jangan ragu untuk bertanya.";
+  } else if (lowerMessage.includes("sosial media") || lowerMessage.includes("kontak person")) {
+    return "Berikut adalah akun sosial media kami: instagram: @smaelitharapanbangsa, Whatsapp: 08383737****.";
   } else {
     return "Maaf, saya tidak mengerti pertanyaan Anda. Untuk informasi lebih lanjut, silakan hubungi kami melalui kontak yang tersedia di website.";
   }
 }
-
-// Initial bot message
-addMessage("Halo! Saya SMPN 1 Bot. Ada yang bisa saya bantu?", "bot");
