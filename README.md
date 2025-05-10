@@ -6,7 +6,7 @@ HTML5 & CSS3
 JavaScript 
 
 📌 Tujuan Proyek
-Proyek ini dibuat sebagai latihan front-end development dan juga bisa digunakan sebagai template dasar untuk kebutuhan profil sekolah secara online.
+Website ini bertujuan untuk menyelasaikan Tugas Besar 1 - Mata Kuliah Pemrograman Web
 
 📷 Preview
 
