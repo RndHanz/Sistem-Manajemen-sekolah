@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pendaftaran Siswa Baru - SMA 01 Elit Harapan Bangsa</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <style>
+      :root {
+        --primary-color: #004080;
+        --secondary-color: #27ae60;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        --transition: all 0.3s ease-in-out;
+        --font-main: "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* Button Styles */
+      .btn {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .btn:hover {
+        background-color: #1f6691;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        nav ul {
+          display: none;
+          flex-direction: column;
+          background-color: var(--primary-color);
+          position: absolute;
+          top: 70px;
+          right: 0;
+          width: 200px;
+          padding: 15px;
+        }
+
+        nav ul li {
+          margin-bottom: 10px;
+        }
+
+        nav ul.show {
+          display: flex;
+        }
+      }
+
+      /* Additional styles for registration page */
+      .registration-header {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 100px 0;
+        margin-bottom: 40px;
+      }
+
+      .registration-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .registration-steps {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+
+      .step {
+        background-color: var(--primary-color);
+        color: white;
+        width: 200px;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        position: relative;
+      }
+
+      .step.active {
+        background-color: var(--secondary-color);
+        transform: scale(1.05);
+        box-shadow: var(--shadow);
+      }
+
+      .step-number {
+        background-color: white;
+        color: var(--primary-color);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin: 0 auto 15px;
+      }
+
+      .step.active .step-number {
+        color: var(--secondary-color);
+      }
+
+      .registration-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .form-section {
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: var(--shadow);
+        margin-bottom: 30px;
+      }
+
+      .form-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--light-color);
+      }
+
+      .form-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        flex: 1;
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--dark-color);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: var(--transition);
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      .form-check {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .form-check-input {
+        margin-right: 10px;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+
+      .btn-back {
+        background-color: var(--light-color);
+        color: var(--dark-color);
+      }
+
+      .btn-back:hover {
+        background-color: #d5dbdb;
+      }
+
+      .requirements {
+        background-color: #f8f9fa;
+        border-left: 4px solid var(--primary-color);
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+
+      .requirements h3 {
+        margin-top: 0;
+        color: var(--primary-color);
+      }
+
+      .requirements ul {
+        padding-left: 20px;
+      }
+
+      .requirements li {
+        margin-bottom: 8px;
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .registration-steps {
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .step {
+          width: 100%;
+          max-width: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="container header-container">
+        <div class="logo">
+          <img src="../../img/Logo 1.png" alt="School Logo" />
+          <div class="logo-text">
+            <h1>SMA 01 ELITE HARAPAN BANGSA</h1>
+            <p>Sekolah Berprestasi, Berkarakter, dan Berwawasan Global</p>
+          </div>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+        <nav id="mainNav">
+          <ul>
+            <li><a href="../../index.html#home">Beranda</a></li>
+            <li><a href="../../index.html#profile">Profil Sekolah</a></li>
+            <li><a href="../../index.html#news">Berita</a></li>
+            <li><a href="../../index.html#gallery">Galeri</a></li>
+            <li><a href="../../index.html#calendar">Kalender</a></li>
+            <li><a href="../../index.html#registration">Pendaftaran</a></li>
+            <li><a href="../../index.html#blog">Blog</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <br />
+
+    <section class="registration-header">
+      <div class="container">
+        <h1>Formulir Pendaftaran Siswa Baru</h1>
+        <p>Tahun Pelajaran 2025/2026</p>
+      </div>
+    </section>
+
+    <!-- Registration Steps -->
+    <div class="container">
+      <div class="registration-steps">
+        <div class="step active">
+          <div class="step-number">1</div>
+          <h3>Data Pribadi</h3>
+          <p>Isi formulir data diri</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Data Orang Tua</h3>
+          <p>Informasi orang tua/wali</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Berkas</h3>
+          <p>Unggah dokumen</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Konfirmasi</h3>
+          <p>Review & submit</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="registration-container">
+      <div class="requirements">
+        <h3>Persyaratan Pendaftaran:</h3>
+        <ul>
+          <li>Usia maksimal 21 tahun pada tanggal 1 Juli 2023</li>
+          <li>Fotokopi rapor SMP/sederajat semester 1-5</li>
+          <li>Fotokopi ijazah SMP/sederajat (jika sudah lulus)</li>
+          <li>Pas foto 3x4 (latar belakang merah) sebanyak 2 lembar</li>
+          <li>Fotokopi akta kelahiran dan KK</li>
+          <li>Sertifikat prestasi (jika ada)</li>
+        </ul>
+        <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2023</p>
+      </div>
+
+      <form id="registrationForm">
+        <!-- Personal Data Section -->
+        <div class="form-section">
+          <h2>Data Pribadi Calon Siswa</h2>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName">Nama Lengkap</label>
+              <input type="text" id="fullName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="nickName">Nama Panggilan</label>
+              <input type="text" id="nickName" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="birthPlace">Tempat Lahir</label>
+              <input type="text" id="birthPlace" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="birthDate">Tanggal Lahir</label>
+              <input type="date" id="birthDate" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="gender">Jenis Kelamin</label>
+              <select id="gender" class="form-control" required>
+                <option value="">Pilih Jenis Kelamin</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="religion">Agama</label>
+              <select id="religion" class="form-control" required>
+                <option value="">Pilih Agama</option>
+                <option value="Islam">Islam</option>
+                <option value="Kristen">Kristen</option>
+                <option value="Katolik">Katolik</option>
+                <option value="Hindu">Hindu</option>
+                <option value="Buddha">Buddha</option>
+                <option value="Konghucu">Konghucu</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Alamat Lengkap</label>
+            <textarea id="address" class="form-control" rows="3" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Nomor Telepon/HP</label>
+              <input type="tel" id="phone" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="previousSchool">Asal Sekolah</label>
+              <input type="text" id="previousSchool" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="nisn">NISN (Nomor Induk Siswa Nasional)</label>
+              <input type="text" id="nisn" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="program">Pilih Jurusan</label>
+            <select id="program" class="form-control" required>
+              <option value="">Pilih jurusan</option>
+              <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
+              <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
+              <option value="Bahasa">Ilmu Bahasa Indonesia dan Budaya</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Parent Data Section -->
+        <div class="form-section">
+          <h2>Data Orang Tua/Wali</h2>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fatherName">Nama Ayah</label>
+              <input type="text" id="fatherName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="fatherPhone">No. HP Ayah</label>
+              <input type="tel" id="fatherPhone" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fatherJob">Pekerjaan Ayah</label>
+              <input type="text" id="fatherJob" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="fatherEducation">Pendidikan Terakhir Ayah</label>
+              <select id="fatherEducation" class="form-control" required>
+                <option value="">Pilih Pendidikan</option>
+                <option value="SD">SD</option>
+                <option value="SMP">SMP</option>
+                <option value="SMA">SMA/SMK</option>
+                <option value="D1-D3">Diploma (D1-D3)</option>
+                <option value="S1">Sarjana (S1)</option>
+                <option value="S2">Magister (S2)</option>
+                <option value="S3">Doktor (S3)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="motherName">Nama Ibu</label>
+              <input type="text" id="motherName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="motherPhone">No. HP Ibu</label>
+              <input type="tel" id="motherPhone" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="motherJob">Pekerjaan Ibu</label>
+              <input type="text" id="motherJob" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="motherEducation">Pendidikan Terakhir Ibu</label>
+              <select id="motherEducation" class="form-control" required>
+                <option value="">Pilih Pendidikan</option>
+                <option value="SD">SD</option>
+                <option value="SMP">SMP</option>
+                <option value="SMA">SMA/SMK</option>
+                <option value="D1-D3">Diploma (D1-D3)</option>
+                <option value="S1">Sarjana (S1)</option>
+                <option value="S2">Magister (S2)</option>
+                <option value="S3">Doktor (S3)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="parentAddress">Alamat Orang Tua</label>
+            <textarea id="parentAddress" class="form-control" rows="3" required></textarea>
+          </div>
+        </div>
+
+        <!-- Documents Section -->
+        <div class="form-section">
+          <h2>Unggah Berkas</h2>
+
+          <div class="form-group">
+            <label for="photo">Pas Foto 3x4 (Format JPG/PNG, maks. 2MB)</label>
+            <input type="file" id="photo" class="form-control" accept="image/*" required />
+          </div>
+
+          <div class="form-group">
+            <label for="rapor">Fotokopi Rapor (Format PDF, maks. 5MB)</label>
+            <input type="file" id="rapor" class="form-control" accept=".pdf" required />
+          </div>
+
+          <div class="form-group">
+            <label for="ijazah">Fotokopi Ijazah (Format PDF, maks. 5MB)</label>
+            <input type="file" id="ijazah" class="form-control" accept=".pdf" />
+            <small class="text-muted">*Jika sudah memiliki ijazah</small>
+          </div>
+
+          <div class="form-group">
+            <label for="akta">Fotokopi Akta Kelahiran (Format PDF, maks. 5MB)</label>
+            <input type="file" id="akta" class="form-control" accept=".pdf" required />
+          </div>
+
+          <div class="form-group">
+            <label for="kk">Fotokopi Kartu Keluarga (Format PDF, maks. 5MB)</label>
+            <input type="file" id="kk" class="form-control" accept=".pdf" required />
+          </div>
+
+          <div class="form-group">
+            <label for="sertifikat">Sertifikat Prestasi (Format PDF, maks. 5MB)</label>
+            <input type="file" id="sertifikat" class="form-control" accept=".pdf" multiple />
+            <small class="text-muted">*Unggah semua sertifikat dalam satu file PDF</small>
+          </div>
+        </div>
+
+        <!-- Confirmation Section -->
+        <div class="form-section">
+          <h2>Konfirmasi Pendaftaran</h2>
+
+          <div class="form-check">
+            <input type="checkbox" id="agreeData" class="form-check-input" required />
+            <label for="agreeData" class="form-check-label">Saya menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan</label>
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="agreeRules" class="form-check-input" required />
+            <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-back">Kembali</button>
+            <button type="submit" class="btn">Kirim Pendaftaran</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>Tentang Kami</h3>
+            <p>SMA 01 ELITE HARAPAN BANGSA adalah sekolah unggulan yang berkomitmen untuk memberikan pendidikan terbaik bagi generasi penerus bangsa.</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f">f</i></a>
+              <a href="#"><i class="fab fa-twitter">t</i></a>
+              <a href="#"><i class="fab fa-instagram">i</i></a>
+              <a href="#"><i class="fab fa-youtube">y</i></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h3>Link Cepat</h3>
+            <ul class="footer-links">
+              <li><a href="#home">Beranda</a></li>
+              <li><a href="#profile">Profil Sekolah</a></li>
+              <li><a href="#news">Berita</a></li>
+              <li><a href="#gallery">Galeri</a></li>
+              <li><a href="#calendar">Kalender</a></li>
+              <li><a href="#registration">Pendaftaran</a></li>
+              <li><a href="#blog">Blog</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Kontak Kami</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Jl elite. Pendidikan No. 123, Kota jakarta elite</p>
+            <p><i class="fas fa-phone"></i> (021) 1234567</p>
+            <p><i class="fas fa-envelope"></i> info@sma01eliteharapanbangsa.sch.id</p>
+            <p><i class="fas fa-clock"></i> Senin-Jumat: 07.00 - 16.00 WIB</p>
+          </div>
+
+          <div class="footer-col">
+            <h3>Peta Lokasi</h3>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e839560a85ab!2sMonumen%20Nasional!5e0!3m2!1sen!2sid!4v1623836333171!5m2!1sen!2sid"
+              width="100%"
+              height="200"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2023 SMP Negeri 1 Maju Jaya. Semua Hak Dilindungi.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

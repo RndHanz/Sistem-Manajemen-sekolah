@@ -457,48 +457,47 @@ nav ul li a:hover {
   color: var(--dark-color);
 }
 
-/* Registration Form Section */
-.registration {
-  background: var(--light-color);
-}
-
-.registration-form {
-  max-width: 800px;
-  margin: 0 auto;
-  background: #fff;
-  padding: 40px;
+/* Registration Section */
+.registration-poster {
+  position: relative;
   border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-shadow: var(--shadow);
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
-  color: var(--dark-color);
-}
-
-.form-control {
+.registration-poster img {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
+  height: 400px;
+  object-fit: cover;
 }
 
-.form-row {
+.poster-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--white);
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  text-align: center;
 }
 
-.form-row .form-group {
-  flex: 1;
+.poster-content h3 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: white;
 }
 
+.poster-content p {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: white;
+}
 /* Blog Section */
 .blog {
   background: var(--light-color);
