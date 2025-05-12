@@ -161,23 +161,62 @@ function addMessage(text, sender) {
 function getBotResponse(message) {
   const lowerMessage = message.toLowerCase();
 
-  if (lowerMessage.includes("halo") || lowerMessage.includes("hai") || lowerMessage.includes("hi") || lowerMessage.includes("hallo" || lowerMessage.includes("aku mau tanya"))) {
-    return "Halo! Ada yang bisa saya bantu?";
-  } else if (lowerMessage.includes("pendaftaran") || lowerMessage.includes("daftar")) {
-    return "Informasi pendaftaran siswa baru bisa Anda temukan di menu Pendaftaran atau dengan mengunjungi link ini: [Link Pendaftaran]";
-  } else if (lowerMessage.includes("tanya") || lowerMessage.includes("ada")) {
-    return "silakan ingin bertanya tentang apa?";
-  } else if (lowerMessage.includes("kalender") || lowerMessage.includes("jadwal")) {
-    return "Kalender akademik sekolah bisa dilihat di menu Kalender pada website kami.";
-  } else if (lowerMessage.includes("alamat") || lowerMessage.includes("lokasi")) {
-    return "SMP Negeri 1 Maju Jaya berlokasi di Jl. Pendidikan No. 123, Kota Maju Jaya. Lihat peta di footer website.";
-  } else if (lowerMessage.includes("terima kasih") || lowerMessage.includes("thanks")) {
-    return "Sama-sama! Jika ada pertanyaan lain, jangan ragu untuk bertanya.";
-  } else if (lowerMessage.includes("Bagus") || lowerMessage.includes("makasih")) {
-    return "Sama-sama! Jika ada pertanyaan lain, jangan ragu untuk bertanya.";
-  } else if (lowerMessage.includes("sosial media") || lowerMessage.includes("kontak person")) {
-    return "Berikut adalah akun sosial media kami: instagram: @smaelitharapanbangsa, Whatsapp: 08383737****.";
-  } else {
-    return "Maaf, saya tidak mengerti pertanyaan Anda. Untuk informasi lebih lanjut, silakan hubungi kami melalui kontak yang tersedia di website.";
+  const responses = [
+    {
+      keywords: ["halo", "hai", "hi", "hallo", "aku mau tanya"],
+      response: "Halo! Ada yang bisa saya bantu?",
+    },
+    {
+      keywords: ["pendaftaran", "daftar"],
+      response: "Informasi pendaftaran siswa baru bisa Anda temukan di menu Pendaftaran atau dengan mengunjungi link ini: [Link Pendaftaran]",
+    },
+    {
+      keywords: ["tanya", "ada"],
+      response: "Silakan ingin bertanya tentang apa?",
+    },
+    {
+      keywords: ["kalender", "jadwal"],
+      response: "Kalender akademik sekolah bisa dilihat di menu Kalender pada website kami.",
+    },
+    {
+      keywords: ["alamat", "lokasi"],
+      response: "SMA ELITE HARAPAN BANGSA berada di Jl elite. Pendidikan No. 123, Kota jakarta elite. Lihat peta di footer website.",
+    },
+    {
+      keywords: ["terima kasih", "thanks", "makasih", "bagus"],
+      response: "Sama-sama! Jika ada pertanyaan lain, jangan ragu untuk bertanya.",
+    },
+    {
+      keywords: ["sosial media", "kontak person"],
+      response: "Berikut adalah akun sosial media kami: Instagram: @smaelitharapanbangsa, WhatsApp: 08383737****.",
+    },
+    {
+      keywords: ["biaya", "spp", "pembayaran"],
+      response: "Informasi mengenai biaya spp adalah sekitar 20 juta biaya pendaftaran dan dalam 1 kelas biayanya adalah total 10 juta. berarti total sampai lulus adalah 30 juta.",
+    },
+    {
+      keywords: ["jurusan", "program", "kurikulum"],
+      response: "Kami menawarkan berbagai program studi unggulan. Silakan kunjungi menu Akademik untuk informasi lengkap.",
+    },
+    {
+      keywords: ["ekstrakurikuler", "ekskul"],
+      response: "Kami memiliki berbagai kegiatan ekstrakurikuler seperti Pramuka, Paskibra, dan Klub Sains. Info lebih lanjut ada di menu Kegiatan.",
+    },
+    {
+      keywords: ["jam buka", "waktu operasional", "buka sekolah"],
+      response: "Jam operasional sekolah kami adalah Senin–Jumat, pukul 07.00–15.00 WIB.",
+    },
+    {
+      keywords: ["login", "akun siswa", "masuk"],
+      response: "tidak ada menu login di website ini, jika ingin login silakan hubungi admin melalui kontak yang tersedia.",
+    },
+  ];
+
+  for (const item of responses) {
+    if (item.keywords.some((keyword) => lowerMessage.includes(keyword))) {
+      return item.response;
+    }
   }
+
+  return "Maaf, saya tidak mengerti pertanyaan Anda. Untuk informasi lebih lanjut, silakan hubungi kami melalui kontak yang tersedia di website.";
 }
