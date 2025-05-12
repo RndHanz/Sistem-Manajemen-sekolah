@@ -106,18 +106,6 @@ nextMonthBtn.addEventListener("click", () => {
   renderCalendar(currentMonth, currentYear);
 });
 
-// Form Submission
-const registrationForm = document.getElementById("registrationForm");
-
-registrationForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  // Here you would typically send the form data to a server
-  // For this example, we'll just show an alert
-  alert("Pendaftaran berhasil dikirim! Kami akan menghubungi Anda segera.");
-  registrationForm.reset();
-});
-
 // Chatbot Functionality
 const chatbotBtn = document.getElementById("chatbotBtn");
 const chatbotWindow = document.getElementById("chatbotWindow");
