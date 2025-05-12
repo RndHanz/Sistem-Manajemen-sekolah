@@ -4,15 +4,274 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tentang Kami - TokoKita</title>
-    <link rel="stylesheet" href="style_TentangKami.css" />
+    <link rel="stylesheet" href="../../styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   </head>
   <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* Variabel Warna */
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --secondary: #f59e0b;
+        --dark: #1e293b;
+        --light: #f8fafc;
+        --gray: #94a3b8;
+      }
+
+      body {
+        color: var(--dark);
+        line-height: 1.6;
+      }
+
+      /* Hero About */
+      .about-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), url(""));
+        background-size: cover;
+        background-position: center;
+        height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+      }
+
+      .about-hero-content h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .about-hero-content p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      /* About Section */
+      .about-section {
+        padding: 5rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-title h2 {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .section-title p {
+        color: var(--gray);
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+      }
+
+      .about-text h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+      }
+
+      .about-text p {
+        margin-bottom: 1.5rem;
+      }
+
+      .about-image img {
+        width: 100%;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .mission-vision {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .mission,
+      .vision {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .mission h3,
+      .vision h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+      }
+
+      .mission h3 i,
+      .vision h3 i {
+        margin-right: 0.8rem;
+        color: var(--secondary);
+      }
+
+      /* Values Section */
+      .values-section {
+        background-color: #f5f7fa;
+        padding: 5rem 5%;
+      }
+
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .value-card {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s;
+      }
+
+      .value-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .value-icon {
+        width: 70px;
+        height: 70px;
+        background-color: rgba(37, 99, 235, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--primary);
+        font-size: 1.8rem;
+      }
+
+      .value-card h3 {
+        margin-bottom: 1rem;
+        color: var(--dark);
+      }
+
+      /* Team Section */
+      .team-section {
+        padding: 5rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .team-member {
+        background-color: white;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        text-align: center;
+      }
+
+      .member-image {
+        height: 250px;
+        overflow: hidden;
+      }
+
+      .member-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+      }
+
+      .team-member:hover .member-image img {
+        transform: scale(1.1);
+      }
+
+      .member-info {
+        padding: 1.5rem;
+      }
+
+      .member-info h3 {
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+      }
+
+      .member-info p {
+        color: var(--primary);
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+
+      .member-social {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .member-social a {
+        color: var(--gray);
+        transition: color 0.3s;
+      }
+
+      .member-social a:hover {
+        color: var(--primary);
+      }
+
+      /* CTA Section */
+      .cta-section {
+        background-color: var(--primary);
+        color: white;
+        padding: 4rem 5%;
+        text-align: center;
+      }
+
+      .cta-content {
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .cta-section h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .cta-section p {
+        margin-bottom: 2rem;
+      }
+    </style>
+
     <!-- Header Section -->
     <header>
       <div class="container header-container">
         <div class="logo">
-          <img src="./img/Logo 1.png" alt="School Logo" />
+          <img src="../../img/Logo 1.png" alt="School Logo" />
           <div class="logo-text">
             <h1>SMA 01 ELITE HARAPAN BANGSA</h1>
             <p>Sekolah Berprestasi, Berkarakter, dan Berwawasan Global</p>
@@ -36,14 +295,11 @@
     </header>
 
     <section class="about-section">
-      <div class="section-title">
-        <h2>Tentang kami</h2>
-        <p>ini adalah cerita awal Toko Gaming ini berkembang</p>
-      </div>
+      <div class="section-title"></div>
 
       <div class="about-content">
         <div class="about-text">
-          <h3>Pemilik Raihan Nur Daffa</h3>
+          <h3>SMA 01 ELITE HARAPAN BANGSA</h3>
           <p>
             Didirikan pada tahun 2025, TokoGaming dimulai sebagai usaha kecil dengan tim yang terdiri dari 2 orang. Dengan semangat inovasi dan dedikasi yang tinggi, kami telah berkembang menjadi perusahaan terkemuka di industri kami dengan
             lebih dari 0 karyawan.
@@ -78,49 +334,56 @@
 
     <!-- Footer -->
     <footer>
-      <div class="footer-content">
-        <div class="footer-column">
-          <h3>Toko Gaming</h3>
-          <p>Belanja online atau offline mudah, aman, dan nyaman hanya di TokoGaming. Kami menyediakan berbagai produk berkualitas dengan harga terbaik.</p>
-          <div class="social-links">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>Tentang Kami</h3>
+            <p>SMA 01 ELITE HARAPAN BANGSA adalah sekolah unggulan yang berkomitmen untuk memberikan pendidikan terbaik bagi generasi penerus bangsa.</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f">f</i></a>
+              <a href="#"><i class="fab fa-twitter">t</i></a>
+              <a href="#"><i class="fab fa-instagram">i</i></a>
+              <a href="#"><i class="fab fa-youtube">y</i></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h3>Link Cepat</h3>
+            <ul class="footer-links">
+              <li><a href="#home">Beranda</a></li>
+              <li><a href="#profile">Profil Sekolah</a></li>
+              <li><a href="#news">Berita</a></li>
+              <li><a href="#gallery">Galeri</a></li>
+              <li><a href="#calendar">Kalender</a></li>
+              <li><a href="#registration">Pendaftaran</a></li>
+              <li><a href="#blog">Blog</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Kontak Kami</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Jl elite. Pendidikan No. 123, Kota jakarta elite</p>
+            <p><i class="fas fa-phone"></i> (021) 1234567</p>
+            <p><i class="fas fa-envelope"></i> info@sma01eliteharapanbangsa.sch.id</p>
+            <p><i class="fas fa-clock"></i> Senin-Jumat: 07.00 - 16.00 WIB</p>
+          </div>
+
+          <div class="footer-col">
+            <h3>Peta Lokasi</h3>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521260322283!2d106.8195613507864!3d-6.194741395493371!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5390917b759%3A0x6b45e839560a85ab!2sMonumen%20Nasional!5e0!3m2!1sen!2sid!4v1623836333171!5m2!1sen!2sid"
+              width="100%"
+              height="200"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
-        <div class="footer-column">
-          <h3>Informasi</h3>
-          <ul>
-            <li><a href="#">Tentang Kami</a></li>
-            <li><a href="#">Kebijakan Privasi</a></li>
-            <li><a href="#">Syarat & Ketentuan</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Hubungi Kami</a></li>
-          </ul>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 SMA 01 ELITE HARAPAN BANGSA. Semua Hak Dilindungi.</p>
         </div>
-        <div class="footer-column">
-          <h3>Layanan Pelanggan</h3>
-          <ul>
-            <li><a href="#">Pusat Bantuan</a></li>
-            <li><a href="#">Cara Pembelian</a></li>
-            <li><a href="#">Pengembalian Produk</a></li>
-            <li><a href="#">Status Pesanan</a></li>
-            <li><a href="#">Pembayaran</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h3>Kontak</h3>
-          <ul>
-            <li><i class="fas fa-map-marker-alt"></i> Jl. Jelambar No. 123, Jakarta Barat</li>
-            <li><i class="fas fa-phone"></i> 083837379443</li>
-            <li><i class="fas fa-envelope"></i> info@tokoGaming.com</li>
-            <li><i class="fas fa-clock"></i> Buka setiap hari 08:00 - 20:00</li>
-          </ul>
-        </div>
-      </div>
-      <div class="copyright">
-        <p>&copy; 2025 RaihanNurDaffa. Toko Gaming copyright.</p>
       </div>
     </footer>
   </body>
