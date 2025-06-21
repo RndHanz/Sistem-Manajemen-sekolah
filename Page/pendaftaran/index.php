@@ -1,3 +1,11 @@
+<?php
+$koneksi = new mysqli("localhost", "root", "", "db_sekolah");
+
+// Cek koneksi
+if ($koneksi->connect_error) {
+    die("Koneksi gagal: " . $koneksi->connect_error);
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -543,7 +551,7 @@
           <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2023</p>
         </div>
 
-        <form id="registrationForm">
+        <form id="registrationForm" method="POST" action="koneksi_pendaftaran.php">
           <!-- Personal Data Section -->
           <div class="form-section">
             <h2>Data Pribadi Calon Siswa</h2>
@@ -686,60 +694,19 @@
             </thead>
 
             <tbody>
-              <!-- Contoh Data 1 -->
+              <?php
+    $conn = new mysqli("localhost", "root", "", "db_sekolah");
+    $result = $conn->query("SELECT * FROM pendaftar"); $no = 1; while ($row = $result->fetch_assoc()) { echo "
               <tr>
-                <td>1</td>
-                <td>Andi Wijaya</td>
-                <td>Jl. Merdeka No. 123, Jakarta</td>
-                <td>Laki-laki</td>
-                <td>Islam</td>
-                <td>SMP Negeri 1 Jakarta</td>
-                <td>IPA</td>
+                <td>".$no++."</td>
+                <td>".$row['nama_lengkap']."</td>
+                <td>".$row['alamat']."</td>
+                <td>".$row['jenis_kelamin']."</td>
+                <td>".$row['agama']."</td>
+                <td>".$row['asal_sekolah']."</td>
+                <td>".$row['jurusan']."</td>
               </tr>
-
-              <!-- Contoh Data 2 -->
-              <tr>
-                <td>2</td>
-                <td>Budi Santoso</td>
-                <td>Jl. Sudirman No. 45, Bandung</td>
-                <td>Laki-laki</td>
-                <td>Kristen</td>
-                <td>SMP Harapan Bangsa</td>
-                <td>IPS</td>
-              </tr>
-
-              <!-- Contoh Data 3 -->
-              <tr>
-                <td>3</td>
-                <td>Citra Dewi</td>
-                <td>Jl. Gatot Subroto No. 78, Surabaya</td>
-                <td>Perempuan</td>
-                <td>Buddha</td>
-                <td>SMP Internasional</td>
-                <td>Bahasa</td>
-              </tr>
-
-              <!-- Contoh Data 4 -->
-              <tr>
-                <td>4</td>
-                <td>Dewi Lestari</td>
-                <td>Jl. Pahlawan No. 56, Yogyakarta</td>
-                <td>Perempuan</td>
-                <td>Katolik</td>
-                <td>SMP Santa Maria</td>
-                <td>IPA</td>
-              </tr>
-
-              <!-- Contoh Data 5 -->
-              <tr>
-                <td>5</td>
-                <td>Eko Prasetyo</td>
-                <td>Jl. Diponegoro No. 90, Semarang</td>
-                <td>Laki-laki</td>
-                <td>Islam</td>
-                <td>SMP Negeri 3 Semarang</td>
-                <td>IPS</td>
-              </tr>
+              "; } $conn->close(); ?>
             </tbody>
           </table>
 

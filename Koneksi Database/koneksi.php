@@ -1,16 +1,14 @@
 <?php
-$host = "localhost";     // Ganti dengan host database kamu, biasanya "localhost"
-$user = "root";          // Ganti dengan username database kamu
-$password = "";          // Ganti dengan password database kamu
-$database = "nama_database"; // Ganti dengan nama database yang ingin dikoneksikan
+$host = "localhost";      // Server database
+$user = "root";           // Username MySQL (default XAMPP: root)
+$pass = "";               // Password MySQL (default XAMPP: kosong)
+$db   = "db_sekolah";        // Nama database
 
 // Membuat koneksi
-$koneksi = mysqli_connect($host, $user, $password, $database);
+$conn = new mysqli($host, $user, $pass, $db);
 
-// Mengecek koneksi
-if (!$koneksi) {
-    die("Koneksi gagal: " . mysqli_connect_error());
+// Cek koneksi
+if ($conn->connect_error) {
+  die("Koneksi ke database gagal: " . $conn->connect_error);
 }
-
-// echo "Koneksi berhasil!";
 ?>
