@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pendaftaran Siswa Baru - SMA 01 Elit Harapan Bangsa</title>
-    <link rel="stylesheet" href="../../styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../styles.css" />
+
     <style>
       :root {
         --primary-color: #004080;
@@ -21,6 +22,13 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        font-family: var(--font-main);
+      }
+
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
       }
 
       .container {
@@ -45,33 +53,7 @@
         background-color: #1f6691;
       }
 
-      /* Responsive */
-      @media (max-width: 768px) {
-        .mobile-menu-btn {
-          display: block;
-        }
-
-        nav ul {
-          display: none;
-          flex-direction: column;
-          background-color: var(--primary-color);
-          position: absolute;
-          top: 70px;
-          right: 0;
-          width: 200px;
-          padding: 15px;
-        }
-
-        nav ul li {
-          margin-bottom: 10px;
-        }
-
-        nav ul.show {
-          display: flex;
-        }
-      }
-
-      /* Additional styles for registration page */
+      /* Registration Header */
       .registration-header {
         background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
         background-size: cover;
@@ -87,6 +69,7 @@
         margin-bottom: 20px;
       }
 
+      /* Registration Steps */
       .registration-steps {
         display: flex;
         justify-content: center;
@@ -128,12 +111,14 @@
         color: var(--secondary-color);
       }
 
+      /* Registration Container */
       .registration-container {
         max-width: 1000px;
         margin: 0 auto;
         padding: 0 20px;
       }
 
+      /* Form Styles */
       .form-section {
         background-color: white;
         border-radius: 10px;
@@ -207,6 +192,7 @@
         background-color: #d5dbdb;
       }
 
+      /* Requirements Box */
       .requirements {
         background-color: #f8f9fa;
         border-left: 4px solid var(--primary-color);
@@ -227,7 +213,309 @@
         margin-bottom: 8px;
       }
 
+      /* Registration Tabs */
+      .registration-tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .tab-btn {
+        padding: 12px 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--dark-color);
+        position: relative;
+        transition: var(--transition);
+      }
+
+      .tab-btn.active {
+        color: var(--primary-color);
+      }
+
+      .tab-btn.active::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--primary-color);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Table Styles */
+      .search-filter {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+
+      .search-box {
+        flex: 1;
+        position: relative;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+      }
+
+      .filter-dropdown {
+        width: 200px;
+      }
+
+      .filter-dropdown select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+      }
+
+      .registrants-table-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        overflow-x: auto;
+        margin-top: 20px;
+      }
+
+      .registrants-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .registrants-table th,
+      .registrants-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      .registrants-table th {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+      }
+
+      .registrants-table tr:hover {
+        background-color: #f9f9f9;
+      }
+
+      .status-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: inline-block;
+      }
+
+      .status-badge.verified {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      .status-badge.pending {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+
+      .status-badge.rejected {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      .action-btn {
+        padding: 5px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+        margin-right: 5px;
+        transition: var(--transition);
+      }
+
+      .action-btn.view-btn {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .action-btn.edit-btn {
+        background-color: #ffc107;
+        color: #212529;
+      }
+
+      .action-btn.delete-btn {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .action-btn:hover {
+        opacity: 0.8;
+      }
+
+      .table-pagination {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        gap: 5px;
+      }
+
+      .btn-pagination {
+        padding: 5px 12px;
+        min-width: 40px;
+      }
+
+      .btn-pagination.active {
+        background-color: var(--primary-color);
+        color: white;
+      }
+
+      .btn-pagination:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* Footer Styles */
+      footer {
+        background-color: var(--dark-color);
+        color: white;
+        padding: 50px 0 20px;
+        margin-top: 50px;
+      }
+
+      .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+      }
+
+      .footer-col h3 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-col h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 50px;
+        height: 2px;
+        background-color: var(--primary-color);
+      }
+
+      .footer-col p {
+        margin-bottom: 15px;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .social-links a {
+        color: white;
+        font-size: 1.2rem;
+        transition: var(--transition);
+      }
+
+      .social-links a:hover {
+        color: var(--primary-color);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 10px;
+      }
+
+      .footer-links a {
+        color: #ddd;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .footer-links a:hover {
+        color: white;
+        padding-left: 5px;
+      }
+
+      .footer-col i {
+        margin-right: 10px;
+        color: var(--primary-color);
+        width: 20px;
+        text-align: center;
+      }
+
+      iframe {
+        border-radius: 5px;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        margin-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      /* Responsive Styles */
       @media (max-width: 768px) {
+        .header-container {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .logo {
+          margin-bottom: 15px;
+          justify-content: center;
+        }
+
+        nav ul {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          text-align: center;
+        }
+
+        nav ul.show {
+          display: flex;
+        }
+
+        nav ul li {
+          margin: 10px 0;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+          margin-top: 15px;
+        }
+
         .form-row {
           flex-direction: column;
           gap: 0;
@@ -242,6 +530,29 @@
         .step {
           width: 100%;
           max-width: 300px;
+        }
+
+        .registrants-table th,
+        .registrants-table td {
+          padding: 8px 10px;
+          font-size: 0.9rem;
+        }
+
+        .action-btn {
+          padding: 3px 5px;
+          font-size: 0.8rem;
+        }
+
+        .search-filter {
+          flex-direction: column;
+        }
+
+        .filter-dropdown {
+          width: 100%;
+        }
+
+        .footer-container {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -273,7 +584,6 @@
         </nav>
       </div>
     </header>
-    <br />
 
     <section class="registration-header">
       <div class="container">
@@ -308,238 +618,377 @@
       </div>
     </div>
 
-    <!-- Registration Form -->
+    <!-- Registration Container with Tabs -->
     <div class="registration-container">
-      <div class="requirements">
-        <h3>Persyaratan Pendaftaran:</h3>
-        <ul>
-          <li>Usia maksimal 21 tahun pada tanggal 1 Juli 2023</li>
-          <li>Fotokopi rapor SMP/sederajat semester 1-5</li>
-          <li>Fotokopi ijazah SMP/sederajat (jika sudah lulus)</li>
-          <li>Pas foto 3x4 (latar belakang merah) sebanyak 2 lembar</li>
-          <li>Fotokopi akta kelahiran dan KK</li>
-          <li>Sertifikat prestasi (jika ada)</li>
-        </ul>
-        <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2023</p>
+      <div class="registration-tabs">
+        <button class="tab-btn active" data-tab="form">Form Pendaftaran</button>
+        <button class="tab-btn" data-tab="list">Daftar Pendaftar</button>
       </div>
 
-      <form id="registrationForm">
-        <!-- Personal Data Section -->
-        <div class="form-section">
-          <h2>Data Pribadi Calon Siswa</h2>
+      <!-- Form Tab Content -->
+      <div id="form-tab" class="tab-content active">
+        <div class="requirements">
+          <h3>Persyaratan Pendaftaran:</h3>
+          <ul>
+            <li>Usia maksimal 21 tahun pada tanggal 1 Juli 2023</li>
+            <li>Fotokopi rapor SMP/sederajat semester 1-5</li>
+            <li>Fotokopi ijazah SMP/sederajat (jika sudah lulus)</li>
+            <li>Pas foto 3x4 (latar belakang merah) sebanyak 2 lembar</li>
+            <li>Fotokopi akta kelahiran dan KK</li>
+            <li>Sertifikat prestasi (jika ada)</li>
+          </ul>
+          <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2023</p>
+        </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fullName">Nama Lengkap</label>
-              <input type="text" id="fullName" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label for="nickName">Nama Panggilan</label>
-              <input type="text" id="nickName" class="form-control" required />
-            </div>
-          </div>
+        <form id="registrationForm">
+          <!-- Personal Data Section -->
+          <div class="form-section">
+            <h2>Data Pribadi Calon Siswa</h2>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="birthPlace">Tempat Lahir</label>
-              <input type="text" id="birthPlace" class="form-control" required />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName">Nama Lengkap</label>
+                <input type="text" id="fullName" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="nickName">Nama Panggilan</label>
+                <input type="text" id="nickName" class="form-control" required />
+              </div>
             </div>
-            <div class="form-group">
-              <label for="birthDate">Tanggal Lahir</label>
-              <input type="date" id="birthDate" class="form-control" required />
-            </div>
-          </div>
 
-          <div class="form-row">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="birthPlace">Tempat Lahir</label>
+                <input type="text" id="birthPlace" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="birthDate">Tanggal Lahir</label>
+                <input type="date" id="birthDate" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gender">Jenis Kelamin</label>
+                <select id="gender" class="form-control" required>
+                  <option value="">Pilih Jenis Kelamin</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="religion">Agama</label>
+                <select id="religion" class="form-control" required>
+                  <option value="">Pilih Agama</option>
+                  <option value="Islam">Islam</option>
+                  <option value="Kristen">Kristen</option>
+                  <option value="Katolik">Katolik</option>
+                  <option value="Hindu">Hindu</option>
+                  <option value="Buddha">Buddha</option>
+                  <option value="Konghucu">Konghucu</option>
+                </select>
+              </div>
+            </div>
+
             <div class="form-group">
-              <label for="gender">Jenis Kelamin</label>
-              <select id="gender" class="form-control" required>
-                <option value="">Pilih Jenis Kelamin</option>
-                <option value="Laki-laki">Laki-laki</option>
-                <option value="Perempuan">Perempuan</option>
+              <label for="address">Alamat Lengkap</label>
+              <textarea id="address" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Nomor Telepon/HP</label>
+                <input type="tel" id="phone" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="previousSchool">Asal Sekolah</label>
+                <input type="text" id="previousSchool" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="nisn">NISN (Nomor Induk Siswa Nasional)</label>
+                <input type="text" id="nisn" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="program">Pilih Jurusan</label>
+              <select id="program" class="form-control" required>
+                <option value="">Pilih jurusan</option>
+                <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
+                <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
+                <option value="Bahasa">Ilmu Bahasa Indonesia dan Budaya</option>
               </select>
             </div>
+          </div>
+
+          <!-- Parent Data Section -->
+          <div class="form-section">
+            <h2>Data Orang Tua/Wali</h2>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fatherName">Nama Ayah</label>
+                <input type="text" id="fatherName" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="fatherPhone">No. HP Ayah</label>
+                <input type="tel" id="fatherPhone" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fatherJob">Pekerjaan Ayah</label>
+                <input type="text" id="fatherJob" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="fatherEducation">Pendidikan Terakhir Ayah</label>
+                <select id="fatherEducation" class="form-control" required>
+                  <option value="">Pilih Pendidikan</option>
+                  <option value="SD">SD</option>
+                  <option value="SMP">SMP</option>
+                  <option value="SMA">SMA/SMK</option>
+                  <option value="D1-D3">Diploma (D1-D3)</option>
+                  <option value="S1">Sarjana (S1)</option>
+                  <option value="S2">Magister (S2)</option>
+                  <option value="S3">Doktor (S3)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="motherName">Nama Ibu</label>
+                <input type="text" id="motherName" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="motherPhone">No. HP Ibu</label>
+                <input type="tel" id="motherPhone" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="motherJob">Pekerjaan Ibu</label>
+                <input type="text" id="motherJob" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="motherEducation">Pendidikan Terakhir Ibu</label>
+                <select id="motherEducation" class="form-control" required>
+                  <option value="">Pilih Pendidikan</option>
+                  <option value="SD">SD</option>
+                  <option value="SMP">SMP</option>
+                  <option value="SMA">SMA/SMK</option>
+                  <option value="D1-D3">Diploma (D1-D3)</option>
+                  <option value="S1">Sarjana (S1)</option>
+                  <option value="S2">Magister (S2)</option>
+                  <option value="S3">Doktor (S3)</option>
+                </select>
+              </div>
+            </div>
+
             <div class="form-group">
-              <label for="religion">Agama</label>
-              <select id="religion" class="form-control" required>
-                <option value="">Pilih Agama</option>
-                <option value="Islam">Islam</option>
-                <option value="Kristen">Kristen</option>
-                <option value="Katolik">Katolik</option>
-                <option value="Hindu">Hindu</option>
-                <option value="Buddha">Buddha</option>
-                <option value="Konghucu">Konghucu</option>
-              </select>
+              <label for="parentAddress">Alamat Orang Tua</label>
+              <textarea id="parentAddress" class="form-control" rows="3" required></textarea>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="address">Alamat Lengkap</label>
-            <textarea id="address" class="form-control" rows="3" required></textarea>
+          <!-- Documents Section -->
+          <div class="form-section">
+            <h2>Unggah Berkas</h2>
+
+            <div class="form-group">
+              <label for="photo">Pas Foto 3x4 (Format JPG/PNG, maks. 2MB)</label>
+              <input type="file" id="photo" class="form-control" accept="image/*" required />
+            </div>
+
+            <div class="form-group">
+              <label for="rapor">Fotokopi Rapor (Format PDF, maks. 5MB)</label>
+              <input type="file" id="rapor" class="form-control" accept=".pdf" required />
+            </div>
+
+            <div class="form-group">
+              <label for="ijazah">Fotokopi Ijazah (Format PDF, maks. 5MB)</label>
+              <input type="file" id="ijazah" class="form-control" accept=".pdf" />
+              <small class="text-muted">*Jika sudah memiliki ijazah</small>
+            </div>
+
+            <div class="form-group">
+              <label for="akta">Fotokopi Akta Kelahiran (Format PDF, maks. 5MB)</label>
+              <input type="file" id="akta" class="form-control" accept=".pdf" required />
+            </div>
+
+            <div class="form-group">
+              <label for="kk">Fotokopi Kartu Keluarga (Format PDF, maks. 5MB)</label>
+              <input type="file" id="kk" class="form-control" accept=".pdf" required />
+            </div>
+
+            <div class="form-group">
+              <label for="sertifikat">Sertifikat Prestasi (Format PDF, maks. 5MB)</label>
+              <input type="file" id="sertifikat" class="form-control" accept=".pdf" multiple />
+              <small class="text-muted">*Unggah semua sertifikat dalam satu file PDF</small>
+            </div>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="phone">Nomor Telepon/HP</label>
-              <input type="tel" id="phone" class="form-control" required />
+          <!-- Confirmation Section -->
+          <div class="form-section">
+            <h2>Konfirmasi Pendaftaran</h2>
+
+            <div class="form-check">
+              <input type="checkbox" id="agreeData" class="form-check-input" required />
+              <label for="agreeData" class="form-check-label">Saya menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan</label>
             </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" class="form-control" required />
+
+            <div class="form-check">
+              <input type="checkbox" id="agreeRules" class="form-check-input" required />
+              <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-back">Kembali</button>
+              <button type="submit" class="btn">Kirim Pendaftaran</button>
             </div>
           </div>
+        </form>
+      </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="previousSchool">Asal Sekolah</label>
-              <input type="text" id="previousSchool" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label for="nisn">NISN (Nomor Induk Siswa Nasional)</label>
-              <input type="text" id="nisn" class="form-control" required />
-            </div>
+      <!-- List Tab Content -->
+      <div id="list-tab" class="tab-content">
+        <div class="search-filter">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Cari pendaftar..." id="searchInput" />
           </div>
-
-          <div class="form-group">
-            <label for="program">Pilih Jurusan</label>
-            <select id="program" class="form-control" required>
-              <option value="">Pilih jurusan</option>
-              <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-              <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-              <option value="Bahasa">Ilmu Bahasa Indonesia dan Budaya</option>
+          <div class="filter-dropdown">
+            <select id="filterProgram">
+              <option value="">Semua Jurusan</option>
+              <option value="IPA">IPA</option>
+              <option value="IPS">IPS</option>
+              <option value="Bahasa">Bahasa</option>
             </select>
           </div>
+          <button class="btn" id="exportBtn"><i class="fas fa-download"></i> Export Data</button>
         </div>
 
-        <!-- Parent Data Section -->
-        <div class="form-section">
-          <h2>Data Orang Tua/Wali</h2>
+        <div class="registrants-table-container">
+          <table class="registrants-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Lengkap</th>
+                <th>Alamat</th>
+                <th>Jenis Kelamin</th>
+                <th>Agama</th>
+                <th>Sekolah Asal</th>
+                <th>Jurusan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Contoh Data 1 -->
+              <tr>
+                <td>1</td>
+                <td>Andi Wijaya</td>
+                <td>Jl. Merdeka No. 123, Jakarta</td>
+                <td>Laki-laki</td>
+                <td>Islam</td>
+                <td>SMP Negeri 1 Jakarta</td>
+                <td>IPA</td>
+                <td><span class="status-badge verified">Terverifikasi</span></td>
+                <td>
+                  <button class="action-btn view-btn" title="Lihat"><i class="fas fa-eye"></i></button>
+                  <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="action-btn delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fatherName">Nama Ayah</label>
-              <input type="text" id="fatherName" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label for="fatherPhone">No. HP Ayah</label>
-              <input type="tel" id="fatherPhone" class="form-control" required />
-            </div>
-          </div>
+              <!-- Contoh Data 2 -->
+              <tr>
+                <td>2</td>
+                <td>Budi Santoso</td>
+                <td>Jl. Sudirman No. 45, Bandung</td>
+                <td>Laki-laki</td>
+                <td>Kristen</td>
+                <td>SMP Harapan Bangsa</td>
+                <td>IPS</td>
+                <td><span class="status-badge pending">Menunggu</span></td>
+                <td>
+                  <button class="action-btn view-btn" title="Lihat"><i class="fas fa-eye"></i></button>
+                  <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="action-btn delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="fatherJob">Pekerjaan Ayah</label>
-              <input type="text" id="fatherJob" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label for="fatherEducation">Pendidikan Terakhir Ayah</label>
-              <select id="fatherEducation" class="form-control" required>
-                <option value="">Pilih Pendidikan</option>
-                <option value="SD">SD</option>
-                <option value="SMP">SMP</option>
-                <option value="SMA">SMA/SMK</option>
-                <option value="D1-D3">Diploma (D1-D3)</option>
-                <option value="S1">Sarjana (S1)</option>
-                <option value="S2">Magister (S2)</option>
-                <option value="S3">Doktor (S3)</option>
-              </select>
-            </div>
-          </div>
+              <!-- Contoh Data 3 -->
+              <tr>
+                <td>3</td>
+                <td>Citra Dewi</td>
+                <td>Jl. Gatot Subroto No. 78, Surabaya</td>
+                <td>Perempuan</td>
+                <td>Buddha</td>
+                <td>SMP Internasional</td>
+                <td>Bahasa</td>
+                <td><span class="status-badge rejected">Ditolak</span></td>
+                <td>
+                  <button class="action-btn view-btn" title="Lihat"><i class="fas fa-eye"></i></button>
+                  <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="action-btn delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="motherName">Nama Ibu</label>
-              <input type="text" id="motherName" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label for="motherPhone">No. HP Ibu</label>
-              <input type="tel" id="motherPhone" class="form-control" required />
-            </div>
-          </div>
+              <!-- Contoh Data 4 -->
+              <tr>
+                <td>4</td>
+                <td>Dewi Lestari</td>
+                <td>Jl. Pahlawan No. 56, Yogyakarta</td>
+                <td>Perempuan</td>
+                <td>Katolik</td>
+                <td>SMP Santa Maria</td>
+                <td>IPA</td>
+                <td><span class="status-badge verified">Terverifikasi</span></td>
+                <td>
+                  <button class="action-btn view-btn" title="Lihat"><i class="fas fa-eye"></i></button>
+                  <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="action-btn delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="motherJob">Pekerjaan Ibu</label>
-              <input type="text" id="motherJob" class="form-control" required />
-            </div>
-            <div class="form-group">
-              <label for="motherEducation">Pendidikan Terakhir Ibu</label>
-              <select id="motherEducation" class="form-control" required>
-                <option value="">Pilih Pendidikan</option>
-                <option value="SD">SD</option>
-                <option value="SMP">SMP</option>
-                <option value="SMA">SMA/SMK</option>
-                <option value="D1-D3">Diploma (D1-D3)</option>
-                <option value="S1">Sarjana (S1)</option>
-                <option value="S2">Magister (S2)</option>
-                <option value="S3">Doktor (S3)</option>
-              </select>
-            </div>
-          </div>
+              <!-- Contoh Data 5 -->
+              <tr>
+                <td>5</td>
+                <td>Eko Prasetyo</td>
+                <td>Jl. Diponegoro No. 90, Semarang</td>
+                <td>Laki-laki</td>
+                <td>Islam</td>
+                <td>SMP Negeri 3 Semarang</td>
+                <td>IPS</td>
+                <td><span class="status-badge pending">Menunggu</span></td>
+                <td>
+                  <button class="action-btn view-btn" title="Lihat"><i class="fas fa-eye"></i></button>
+                  <button class="action-btn edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                  <button class="action-btn delete-btn" title="Hapus"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-          <div class="form-group">
-            <label for="parentAddress">Alamat Orang Tua</label>
-            <textarea id="parentAddress" class="form-control" rows="3" required></textarea>
-          </div>
-        </div>
-
-        <!-- Documents Section -->
-        <div class="form-section">
-          <h2>Unggah Berkas</h2>
-
-          <div class="form-group">
-            <label for="photo">Pas Foto 3x4 (Format JPG/PNG, maks. 2MB)</label>
-            <input type="file" id="photo" class="form-control" accept="image/*" required />
-          </div>
-
-          <div class="form-group">
-            <label for="rapor">Fotokopi Rapor (Format PDF, maks. 5MB)</label>
-            <input type="file" id="rapor" class="form-control" accept=".pdf" required />
-          </div>
-
-          <div class="form-group">
-            <label for="ijazah">Fotokopi Ijazah (Format PDF, maks. 5MB)</label>
-            <input type="file" id="ijazah" class="form-control" accept=".pdf" />
-            <small class="text-muted">*Jika sudah memiliki ijazah</small>
-          </div>
-
-          <div class="form-group">
-            <label for="akta">Fotokopi Akta Kelahiran (Format PDF, maks. 5MB)</label>
-            <input type="file" id="akta" class="form-control" accept=".pdf" required />
-          </div>
-
-          <div class="form-group">
-            <label for="kk">Fotokopi Kartu Keluarga (Format PDF, maks. 5MB)</label>
-            <input type="file" id="kk" class="form-control" accept=".pdf" required />
-          </div>
-
-          <div class="form-group">
-            <label for="sertifikat">Sertifikat Prestasi (Format PDF, maks. 5MB)</label>
-            <input type="file" id="sertifikat" class="form-control" accept=".pdf" multiple />
-            <small class="text-muted">*Unggah semua sertifikat dalam satu file PDF</small>
-          </div>
-        </div>
-
-        <!-- Confirmation Section -->
-        <div class="form-section">
-          <h2>Konfirmasi Pendaftaran</h2>
-
-          <div class="form-check">
-            <input type="checkbox" id="agreeData" class="form-check-input" required />
-            <label for="agreeData" class="form-check-label">Saya menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan</label>
-          </div>
-
-          <div class="form-check">
-            <input type="checkbox" id="agreeRules" class="form-check-input" required />
-            <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" class="btn btn-back">Kembali</button>
-            <button type="submit" class="btn">Kirim Pendaftaran</button>
+          <div class="table-pagination">
+            <button class="btn btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
+            <button class="btn btn-pagination active">1</button>
+            <button class="btn btn-pagination">2</button>
+            <button class="btn btn-pagination">3</button>
+            <button class="btn btn-pagination"><i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
 
     <!-- Footer -->
@@ -596,5 +1045,79 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      // Mobile Menu Toggle
+      document.getElementById("mobileMenuBtn").addEventListener("click", function () {
+        const nav = document.getElementById("mainNav").querySelector("ul");
+        nav.classList.toggle("show");
+      });
+
+      // Tab functionality
+      const tabBtns = document.querySelectorAll(".tab-btn");
+      const tabContents = document.querySelectorAll(".tab-content");
+
+      tabBtns.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          const tabId = this.getAttribute("data-tab");
+
+          // Remove active class from all buttons and contents
+          tabBtns.forEach((btn) => btn.classList.remove("active"));
+          tabContents.forEach((content) => content.classList.remove("active"));
+
+          // Add active class to clicked button and corresponding content
+          this.classList.add("active");
+          document.getElementById(`${tabId}-tab`).classList.add("active");
+        });
+      });
+
+      // Search functionality
+      const searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("keyup", function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll(".registrants-table tbody tr");
+
+        rows.forEach((row) => {
+          const name = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+          const school = row.querySelector("td:nth-child(6)").textContent.toLowerCase();
+
+          if (name.includes(searchTerm) || school.includes(searchTerm)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      });
+
+      // Filter functionality
+      const filterProgram = document.getElementById("filterProgram");
+      filterProgram.addEventListener("change", function () {
+        const selectedProgram = this.value;
+        const rows = document.querySelectorAll(".registrants-table tbody tr");
+
+        rows.forEach((row) => {
+          const program = row.querySelector("td:nth-child(7)").textContent;
+
+          if (selectedProgram === "" || program === selectedProgram) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      });
+
+      // Export button functionality
+      document.getElementById("exportBtn").addEventListener("click", function () {
+        alert("Data berhasil diekspor dalam format CSV");
+        // In a real implementation, this would generate and download a CSV file
+      });
+
+      // Form submission
+      document.getElementById("registrationForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert("Formulir pendaftaran berhasil dikirim!");
+        // In a real implementation, this would send data to server
+      });
+    </script>
   </body>
 </html>
