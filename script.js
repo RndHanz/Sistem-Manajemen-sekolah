@@ -6,6 +6,24 @@ mobileMenuBtn.addEventListener("click", () => {
   mainNav.classList.toggle("active");
 });
 
+// drowdown menu functionality
+document.addEventListener("DOMContentLoaded", function () {
+  const toggle = document.getElementById("dropdownToggle");
+  const menu = document.getElementById("dropdownMenu");
+
+  toggle.addEventListener("click", function (e) {
+    e.preventDefault();
+    menu.classList.toggle("show");
+  });
+
+  // Tutup dropdown jika klik di luar
+  document.addEventListener("click", function (e) {
+    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.remove("show");
+    }
+  });
+});
+
 // Smooth Scrolling for Anchor Links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
