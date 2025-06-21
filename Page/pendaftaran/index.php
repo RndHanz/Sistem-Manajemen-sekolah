@@ -1,11 +1,3 @@
-<?php
-$koneksi = new mysqli("localhost", "root", "", "db_sekolah");
-
-// Cek koneksi
-if ($koneksi->connect_error) {
-    die("Koneksi gagal: " . $koneksi->connect_error);
-}
-?>
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -551,7 +543,7 @@ if ($koneksi->connect_error) {
           <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2023</p>
         </div>
 
-        <form id="registrationForm" method="POST" action="koneksi_pendaftaran.php">
+        <form id="registrationForm" method="POST" action="pendaftaran.php">
           <!-- Personal Data Section -->
           <div class="form-section">
             <h2>Data Pribadi Calon Siswa</h2>

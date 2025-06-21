@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 
 // ambil data dari form
-$fullName = $_POST['fullName'];
+$fullName = $_POST['Nama_Lengkap'];
 $nickName = $_POST['nickName'];
 $birthPlace = $_POST['birthPlace'];
 $birthDate = $_POST['birthDate'];
