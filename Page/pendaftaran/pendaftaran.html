@@ -396,94 +396,6 @@
         cursor: not-allowed;
       }
 
-      /* Footer Styles */
-      footer {
-        background-color: #002347;
-        color: white;
-        padding: 50px 0 20px;
-        margin-top: 50px;
-      }
-
-      .footer-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 30px;
-      }
-
-      .footer-col h3 {
-        font-size: 1.2rem;
-        margin-bottom: 20px;
-        position: relative;
-        padding-bottom: 10px;
-      }
-
-      .footer-col h3::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 50px;
-        height: 2px;
-        background-color: var(--primary-color);
-      }
-
-      .footer-col p {
-        margin-bottom: 15px;
-      }
-
-      .social-links {
-        display: flex;
-        gap: 15px;
-        margin-top: 20px;
-      }
-
-      .social-links a {
-        color: white;
-        font-size: 1.2rem;
-        transition: var(--transition);
-      }
-
-      .social-links a:hover {
-        color: var(--primary-color);
-      }
-
-      .footer-links {
-        list-style: none;
-      }
-
-      .footer-links li {
-        margin-bottom: 10px;
-      }
-
-      .footer-links a {
-        color: #ddd;
-        text-decoration: none;
-        transition: var(--transition);
-      }
-
-      .footer-links a:hover {
-        color: white;
-        padding-left: 5px;
-      }
-
-      .footer-col i {
-        margin-right: 10px;
-        color: var(--primary-color);
-        width: 20px;
-        text-align: center;
-      }
-
-      iframe {
-        border-radius: 5px;
-      }
-
-      .footer-bottom {
-        text-align: center;
-        padding-top: 30px;
-        margin-top: 30px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
       /* Responsive Styles */
       @media (max-width: 768px) {
         .header-container {
@@ -850,10 +762,10 @@
             <h3>Tentang Kami</h3>
             <p>SMA 01 ELITE HARAPAN BANGSA adalah sekolah unggulan yang berkomitmen untuk memberikan pendidikan terbaik bagi generasi penerus bangsa.</p>
             <div class="social-links">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-twitter"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a target="_blank" href="https://www.facebook.com/univmercubuana/"><i class="fab fa-facebook-f"></i></a>
+              <a target="_blank" href="https://www.linkedin.com/school/universitas-mercu-buana/posts/?feedView=all"><i class="fab fa-linkedin"></i></a>
+              <a target="_blank" href="https://www.instagram.com/univmercubuana/"><i class="fab fa-instagram"></i></a>
+              <a target="_blank" href="https://www.youtube.com/@mercutvofficial"><i class="fab fa-youtube"></i></a>
             </div>
           </div>
 
@@ -874,7 +786,7 @@
             <h3>Kontak Kami</h3>
             <p><i class="fas fa-map-marker-alt"></i> Jl elite. Pendidikan No. 123, Kota jakarta elite</p>
             <p><i class="fas fa-phone"></i> (021) 1234567</p>
-            <p><i class="fas fa-envelope"></i> info@sma01eliteharapanbangsa.sch.id</p>
+            <p><i class="fas fa-envelope"></i> info@sma01elite.sch.id</p>
             <p><i class="fas fa-clock"></i> Senin-Jumat: 07.00 - 16.00 WIB</p>
           </div>
 
@@ -967,7 +879,6 @@
       document.getElementById("registrationForm").addEventListener("submit", function (e) {
         e.preventDefault();
         alert("Formulir pendaftaran berhasil dikirim!");
-        // In a real implementation, this would send data to server
       });
     </script>
   </body>

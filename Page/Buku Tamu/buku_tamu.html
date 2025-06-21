@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buku Tamu Sekolah</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+      :root {
+        --primary-color: #007bff;
+        --secondary-color: #0056b3;
+        --white: #ffffff;
+        --transition: all 0.3s ease;
+        --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        --dark-blue: #032541;
+        --footer-bg: #1a2a3a;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f5f5;
+      }
+
+      .student-list-header {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 80px 0;
+        margin-bottom: 40px;
+      }
+
+      .student-list-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .student-list-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px 40px;
+      }
+
+      form {
+        background-color: var(--white);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+      }
+
+      label {
+        font-weight: 600;
+        display: block;
+        margin-top: 15px;
+        margin-bottom: 5px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 12px 20px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: var(--transition);
+        width: 100%;
+      }
+
+      button:hover {
+        background: var(--secondary-color);
+      }
+
+      #notifikasi {
+        display: none;
+        margin-top: 20px;
+        background-color: #d4edda;
+        color: #155724;
+        padding: 15px;
+        border-left: 6px solid #28a745;
+        border-radius: 6px;
+        font-weight: bold;
+      }
+
+      /* FOOTER STYLE UPDATE */
+      footer {
+        background-color: #002347;
+        color: white;
+        padding: 60px 0 20px;
+        position: relative;
+      }
+
+      .footer-wave {
+        position: absolute;
+        top: -50px;
+        left: 0;
+        width: 100%;
+        height: 50px;
+        background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%231a2a3a" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%231a2a3a" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%231a2a3a"/></svg>');
+        background-size: cover;
+      }
+
+      .footer-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .footer-column {
+        flex: 1 1 250px;
+        margin-bottom: 30px;
+        padding: 0 15px;
+      }
+
+      .footer-column h3 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-column h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 50px;
+        height: 2px;
+        background: var(--primary-color);
+      }
+
+      .footer-column ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-column ul li {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-column ul li i {
+        margin-right: 10px;
+        color: var(--primary-color);
+        width: 20px;
+        text-align: center;
+      }
+
+      .footer-column a {
+        color: #d1d1d1;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .footer-column a:hover {
+        color: var(--white);
+        padding-left: 5px;
+      }
+
+      .map-container iframe {
+        width: 100%;
+        height: 200px;
+        border: 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding: 20px 0;
+        margin-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.9rem;
+        color: #b1b1b1;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .social-links a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        transition: var(--transition);
+      }
+
+      .social-links a:hover {
+        background: var(--primary-color);
+        transform: translateY(-3px);
+      }
+
+      @media (max-width: 768px) {
+        .footer-container {
+          flex-direction: column;
+        }
+
+        .footer-column {
+          flex: 1 1 100%;
+          margin-bottom: 25px;
+        }
+
+        .student-list-header h1 {
+          font-size: 2rem;
+        }
+
+        .map-container iframe {
+          height: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="student-list-header">
+      <h1>Buku Tamu Sekolah</h1>
+      <p>Silakan isi form tamu di bawah ini</p>
+    </header>
+
+    <div class="student-list-container">
+      <form onsubmit="tampilkanNotifikasi(); return false;">
+        <label>Nama:</label>
+        <input type="text" name="nama" required />
+
+        <label>Email:</label>
+        <input type="email" name="email" required />
+
+        <label>Jenis Tamu:</label>
+        <select name="jenis_tamu" required>
+          <option value="">-- Pilih Jenis Tamu --</option>
+          <option value="Orang Tua/Wali Murid">Orang Tua/Wali Murid</option>
+          <option value="Alumni">Alumni</option>
+          <option value="Mitra Sekolah">Mitra Sekolah</option>
+          <option value="Umum">Umum</option>
+        </select>
+
+        <label>Instansi:</label>
+        <input type="text" name="instansi" />
+
+        <label>Pesan:</label>
+        <textarea name="pesan" rows="5" required></textarea>
+
+        <button type="submit">Kirim</button>
+      </form>
+
+      <div id="notifikasi">
+        👍 Buku tamu berhasil diisi! Silakan isi form pendaftaran
+        <a href="../pendaftaran/pendaftaran.html">di sini</a>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>Kontak Sekolah</h3>
+          <ul>
+            <li><i class="fas fa-envelope"></i> info@sekolahcontoh.sch.id</li>
+            <li><i class="fas fa-phone-alt"></i> (021) 12345678</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jl. Pendidikan No. 123, Kota Jakarta</li>
+            <li><i class="fas fa-clock"></i> Senin-Jumat: 07.00 - 16.00</li>
+          </ul>
+        </div>
+
+        <div class="footer-column">
+          <h3>Ikuti Kami</h3>
+          <div class="social-links">
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+          <p style="margin-top: 20px; color: #b1b1b1; font-size: 0.9rem">Ikuti media sosial kami untuk mendapatkan informasi terbaru tentang kegiatan sekolah.</p>
+        </div>
+
+        <div class="footer-column map-container">
+          <h3>Lokasi Kami</h3>
+          <iframe src="https://maps.google.com/maps?q=sekolah&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 SMA 01 ELITE HARAPAN BANGSA. Semua Hak Dilindungi.</p>
+      </div>
+    </footer>
+
+    <script>
+      function tampilkanNotifikasi() {
+        document.getElementById("notifikasi").style.display = "block";
+        document.querySelector("form").reset();
+      }
+    </script>
+  </body>
+</html>
