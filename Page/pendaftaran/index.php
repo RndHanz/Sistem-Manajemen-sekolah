@@ -859,8 +859,7 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
           <div class="table-pagination">
             <button class="btn btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
             <button class="btn btn-pagination active">1</button>
-            <button class="btn btn-pagination">2</button>
-            <button class="btn btn-pagination">3</button>
+       
             <button class="btn btn-pagination"><i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
