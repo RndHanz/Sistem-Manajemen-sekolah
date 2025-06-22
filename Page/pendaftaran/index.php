@@ -545,117 +545,115 @@
           <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2025</p>
         </div>
 
-        <form id="registrationForm" method="POST" action="pendaftaran.php">
-          <!-- Personal Data Section -->
-          <div class="form-section">
-            <h2>Data Pribadi Calon Siswa</h2>
+       <form id="registrationForm" method="POST" action="pendaftaran.php">
+  <!-- Data Pribadi -->
+  <div class="form-section">
+    <h2>Data Pribadi Calon Siswa</h2>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label for="fullName">Nama Lengkap</label>
-                <input type="text" id="fullName" name="fullName" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label for="nickName">Nama Panggilan</label>
-                <input type="text" id="nickName" name="fullName"  class="form-control" required />
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="birthPlace">Tempat Lahir</label>
-                <input type="text" id="birthPlace" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label for="birthDate">Tanggal Lahir</label>
-                <input type="date" id="birthDate" class="form-control" required />
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="gender">Jenis Kelamin</label>
-                <select id="gender" class="form-control" required>
-                  <option value="">Pilih Jenis Kelamin</option>
-                  <option value="Laki-laki">Laki-laki</option>
-                  <option value="Perempuan">Perempuan</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="religion">Agama</label>
-                <select id="religion" class="form-control" required>
-                  <option value="">Pilih Agama</option>
-                  <option value="Islam">Islam</option>
-                  <option value="Kristen">Kristen</option>
-                  <option value="Katolik">Katolik</option>
-                  <option value="Hindu">Hindu</option>
-                  <option value="Buddha">Buddha</option>
-                  <option value="Konghucu">Konghucu</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="address">Alamat Lengkap</label>
-              <textarea id="address" class="form-control" rows="3" required></textarea>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="phone">Nomor Telepon/HP</label>
-                <input type="tel" id="phone" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" class="form-control" required />
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="previousSchool">Asal Sekolah</label>
-                <input type="text" id="previousSchool" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label for="nisn">NISN (Nomor Induk Siswa Nasional)</label>
-                <input type="text" id="nisn" class="form-control" required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="program">Pilih Jurusan</label>
-              <select id="program" class="form-control" required>
-                <option value="">Pilih jurusan</option>
-                <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-                <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-                <option value="Bahasa">Ilmu Bahasa Indonesia dan Budaya</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Confirmation Section -->
-          <div class="form-section">
-            <h2>Konfirmasi Pendaftaran</h2>
-
-            <div class="form-check">
-              <input type="checkbox" id="agreeData" class="form-check-input" required />
-              <label for="agreeData" class="form-check-label">Saya menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan</label>
-            </div>
-
-            <div class="form-check">
-              <input type="checkbox" id="agreeRules" class="form-check-input" required />
-              <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
-            </div>
-
-            <div class="form-actions">
-              <button type="button" class="btn btn-back">Kembali</button>
-              <button type="submit" class="btn">Kirim Pendaftaran</button>
-            </div>
-          </div>
-        </form>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="nama_lengkap">Nama Lengkap</label>
+        <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control" required />
       </div>
+      <div class="form-group">
+        <label for="nama_panggilan">Nama Panggilan</label>
+        <input type="text" id="nama_panggilan" name="nama_panggilan" class="form-control" required />
+      </div>
+    </div>
 
-      <!-- List Tab Content -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="tempat_lahir">Tempat Lahir</label>
+        <input type="text" id="tempat_lahir" name="tempat_lahir" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="tanggal_lahir">Tanggal Lahir</label>
+        <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="jenis_kelamin">Jenis Kelamin</label>
+        <select id="jenis_kelamin" name="jenis_kelamin" class="form-control" required>
+          <option value="">Pilih Jenis Kelamin</option>
+          <option value="Laki-laki">Laki-laki</option>
+          <option value="Perempuan">Perempuan</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="agama">Agama</label>
+        <select id="agama" name="agama" class="form-control" required>
+          <option value="">Pilih Agama</option>
+          <option value="Islam">Islam</option>
+          <option value="Kristen">Kristen</option>
+          <option value="Katolik">Katolik</option>
+          <option value="Hindu">Hindu</option>
+          <option value="Buddha">Buddha</option>
+          <option value="Konghucu">Konghucu</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="alamat">Alamat Lengkap</label>
+      <textarea id="alamat" name="alamat" class="form-control" rows="3" required></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="telepon">Nomor Telepon/HP</label>
+        <input type="tel" id="telepon" name="telepon" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" class="form-control" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="asal_sekolah">Asal Sekolah</label>
+        <input type="text" id="asal_sekolah" name="asal_sekolah" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label for="nisn">NISN</label>
+        <input type="text" id="nisn" name="nisn" class="form-control" required />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="jurusan">Pilih Jurusan</label>
+      <select id="jurusan" name="jurusan" class="form-control" required>
+        <option value="">Pilih jurusan</option>
+        <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
+        <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
+        <option value="Bahasa">Ilmu Bahasa Indonesia dan Budaya</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Konfirmasi -->
+  <div class="form-section">
+    <h2>Konfirmasi Pendaftaran</h2>
+    <div class="form-check">
+      <input type="checkbox" id="agreeData" class="form-check-input" required />
+      <label for="agreeData" class="form-check-label">Saya menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan</label>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" id="agreeRules" class="form-check-input" required />
+      <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-back">Kembali</button>
+      <button type="submit" class="btn">Kirim Pendaftaran</button>
+    </div>
+  </div>
+</form>
+
+
+      <!-- Pendaftar Tabel-->
       <div id="list-tab" class="tab-content">
         <div class="search-filter">
           <div class="search-box">
