@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -514,7 +516,7 @@
         </div>
 
         <div class="step">
-          <div class="step-number"></div>
+          <div class="step-number">2</div>
           <h3>Konfirmasi</h3>
           <p>Review & submit</p>
         </div>
@@ -533,14 +535,14 @@
         <div class="requirements">
           <h3>Persyaratan Pendaftaran:</h3>
           <ul>
-            <li>Usia maksimal 21 tahun pada tanggal 1 Juli 2023</li>
-            <li>Fotokopi rapor SMP/sederajat semester 1-5</li>
+            <li>Usia maksimal 21 tahun pada tanggal 1 Juli 2025</li>
+            <li>Fotokopi rapor SMP/sederajat</li>
             <li>Fotokopi ijazah SMP/sederajat (jika sudah lulus)</li>
             <li>Pas foto 3x4 (latar belakang merah) sebanyak 2 lembar</li>
             <li>Fotokopi akta kelahiran dan KK</li>
             <li>Sertifikat prestasi (jika ada)</li>
           </ul>
-          <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2023</p>
+          <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2025</p>
         </div>
 
         <form id="registrationForm" method="POST" action="pendaftaran.php">
@@ -551,11 +553,11 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="fullName">Nama Lengkap</label>
-                <input type="text" id="fullName" class="form-control" required />
+                <input type="text" id="fullName" name="fullName" class="form-control" required />
               </div>
               <div class="form-group">
                 <label for="nickName">Nama Panggilan</label>
-                <input type="text" id="nickName" class="form-control" required />
+                <input type="text" id="nickName" name="fullName"  class="form-control" required />
               </div>
             </div>
 
@@ -834,11 +836,7 @@
         // In a real implementation, this would generate and download a CSV file
       });
 
-      // Form submission
-      document.getElementById("registrationForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        alert("Formulir pendaftaran berhasil dikirim!");
-      });
+      
     </script>
   </body>
 </html>
