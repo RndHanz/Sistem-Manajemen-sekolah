@@ -1,5 +1,141 @@
+<?php
+// Proses form pendaftaran langsung di file ini
+$successMsg = $errorMsg = "";
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $nama_lengkap   = $_POST['nama_lengkap'] ?? '';
+  $nama_panggilan = $_POST['nama_panggilan'] ?? '';
+  $tempat_lahir   = $_POST['tempat_lahir'] ?? '';
+  $tanggal_lahir  = $_POST['tanggal_lahir'] ?? '';
+  $jenis_kelamin  = $_POST['jenis_kelamin'] ?? '';
+  $agama          = $_POST['agama'] ?? '';
+  $alamat         = $_POST['alamat'] ?? '';
+  $telepon        = $_POST['telepon'] ?? '';
+  $email          = $_POST['email'] ?? '';
+  $asal_sekolah   = $_POST['asal_sekolah'] ?? '';
+  $nisn           = $_POST['nisn'] ?? '';
+  $jurusan        = $_POST['jurusan'] ?? '';
 
+  if (
+    $nama_lengkap && $nama_panggilan && $tempat_lahir && $tanggal_lahir &&
+    $jenis_kelamin && $agama && $alamat && $telepon && $email &&
+    $asal_sekolah && $nisn && $jurusan
+  ) {
+    $conn = new mysqli("localhost", "root", "", "db_sekolah");
+    if ($conn->connect_error) {
+      $errorMsg = "Gagal koneksi ke database.";
+    } else {
+      $stmt = $conn->prepare("INSERT INTO pendaftar (nama_lengkap, nama_panggilan, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, alamat, telepon, email, asal_sekolah, nisn, jurusan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $stmt->bind_param("ssssssssssss", $nama_lengkap, $nama_panggilan, $tempat_lahir, $tanggal_lahir, $jenis_kelamin, $agama, $alamat, $telepon, $email, $asal_sekolah, $nisn, $jurusan);
+      if ($stmt->execute()) {
+        // Redirect setelah submit agar tidak ada konfirmasi pengiriman ulang saat refresh
+        header("Location: " . strtok($_SERVER["REQUEST_URI"], '?') . "?success=1");
+        exit;
+      } else {
+        $errorMsg = "Gagal menyimpan data. Silakan coba lagi.";
+      }
+      $stmt->close();
+      $conn->close();
+    }
+  } else {
+    $errorMsg = "Semua field harus diisi.";
+  }
+}
 
+// Export CSV jika diminta
+if (isset($_GET['export']) && $_GET['export'] === 'csv') {
+  header('Content-Type: text/csv; charset=utf-8');
+  header('Content-Disposition: attachment; filename=daftar_pendaftar.csv');
+  $output = fopen('php://output', 'w');
+  // Header kolom
+  fputcsv($output, [
+    'No', 'Nama Lengkap', 'Nama Panggilan', 'Tempat Lahir', 'Tanggal Lahir',
+    'Jenis Kelamin', 'Agama', 'Alamat', 'Telepon', 'Email', 'Sekolah Asal', 'NISN', 'Jurusan'
+  ]);
+  $conn = new mysqli("localhost", "root", "", "db_sekolah");
+  if (!$conn->connect_error) {
+    $sql = "SELECT * FROM pendaftar ORDER BY id DESC";
+    $result = $conn->query($sql);
+    if ($result && $result->num_rows > 0) {
+      $no = 1;
+      while ($row = $result->fetch_assoc()) {
+        fputcsv($output, [
+          $no++,
+          $row['nama_lengkap'],
+          $row['nama_panggilan'],
+          $row['tempat_lahir'],
+          $row['tanggal_lahir'],
+          $row['jenis_kelamin'],
+          $row['agama'],
+          $row['alamat'],
+          $row['telepon'],
+          $row['email'],
+          $row['asal_sekolah'],
+          $row['nisn'],
+          $row['jurusan']
+        ]);
+      }
+    }
+    $conn->close();
+  }
+  fclose($output);
+  exit;
+}
+
+// Export Excel jika diminta
+if (isset($_GET['export']) && $_GET['export'] === 'excel') {
+  header('Content-Type: application/vnd.ms-excel');
+  header('Content-Disposition: attachment; filename=daftar_pendaftar.xls');
+  echo "<table border='1'>";
+  echo "<tr>
+    <th>No</th>
+    <th>Nama Lengkap</th>
+    <th>Nama Panggilan</th>
+    <th>Tempat Lahir</th>
+    <th>Tanggal Lahir</th>
+    <th>Jenis Kelamin</th>
+    <th>Agama</th>
+    <th>Alamat</th>
+    <th>Telepon</th>
+    <th>Email</th>
+    <th>Sekolah Asal</th>
+    <th>NISN</th>
+    <th>Jurusan</th>
+  </tr>";
+  $conn = new mysqli("localhost", "root", "", "db_sekolah");
+  if (!$conn->connect_error) {
+    $sql = "SELECT * FROM pendaftar ORDER BY id DESC";
+    $result = $conn->query($sql);
+    if ($result && $result->num_rows > 0) {
+      $no = 1;
+      while ($row = $result->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $no++ . "</td>";
+        echo "<td>" . htmlspecialchars($row['nama_lengkap']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['nama_panggilan']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['tempat_lahir']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['tanggal_lahir']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['jenis_kelamin']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['agama']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['alamat']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['telepon']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['asal_sekolah']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['nisn']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['jurusan']) . "</td>";
+        echo "</tr>";
+      }
+    }
+    $conn->close();
+  }
+  echo "</table>";
+  exit;
+}
+
+// Tampilkan pesan sukses jika ada parameter success di URL
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+  $successMsg = "Pendaftaran berhasil! Data Anda telah masuk ke daftar pendaftar.";
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -532,6 +668,13 @@
 
       <!-- Form Tab Content -->
       <div id="form-tab" class="tab-content active">
+        <!-- Pesan sukses/gagal -->
+        <?php if (!empty($successMsg)): ?>
+          <div style="background:#d4edda;color:#155724;padding:12px;border-radius:6px;margin-bottom:15px;"><?php echo $successMsg; ?></div>
+        <?php endif; ?>
+        <?php if (!empty($errorMsg)): ?>
+          <div style="background:#f8d7da;color:#721c24;padding:12px;border-radius:6px;margin-bottom:15px;"><?php echo $errorMsg; ?></div>
+        <?php endif; ?>
         <div class="requirements">
           <h3>Persyaratan Pendaftaran:</h3>
           <ul>
@@ -544,191 +687,185 @@
           </ul>
           <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2025</p>
         </div>
+        <form id="registrationForm" method="POST" action="">
+          <!-- Data Pribadi -->
+          <div class="form-section">
+            <h2>Data Pribadi Calon Siswa</h2>
 
-       <form id="registrationForm" method="POST" action="pendaftaran.php">
-  <!-- Data Pribadi -->
-  <div class="form-section">
-    <h2>Data Pribadi Calon Siswa</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nama_lengkap">Nama Lengkap</label>
+                <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="nama_panggilan">Nama Panggilan</label>
+                <input type="text" id="nama_panggilan" name="nama_panggilan" class="form-control" required />
+              </div>
+            </div>
 
-    <div class="form-row">
-      <div class="form-group">
-        <label for="nama_lengkap">Nama Lengkap</label>
-        <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control" required />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tempat_lahir">Tempat Lahir</label>
+                <input type="text" id="tempat_lahir" name="tempat_lahir" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="tanggal_lahir">Tanggal Lahir</label>
+                <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="jenis_kelamin">Jenis Kelamin</label>
+                <select id="jenis_kelamin" name="jenis_kelamin" class="form-control" required>
+                  <option value="">Pilih Jenis Kelamin</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="agama">Agama</label>
+                <select id="agama" name="agama" class="form-control" required>
+                  <option value="">Pilih Agama</option>
+                  <option value="Islam">Islam</option>
+                  <option value="Kristen">Kristen</option>
+                  <option value="Katolik">Katolik</option>
+                  <option value="Hindu">Hindu</option>
+                  <option value="Buddha">Buddha</option>
+                  <option value="Konghucu">Konghucu</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="alamat">Alamat Lengkap</label>
+              <textarea id="alamat" name="alamat" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="telepon">Nomor Telepon/HP</label>
+                <input type="tel" id="telepon" name="telepon" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="asal_sekolah">Asal Sekolah</label>
+                <input type="text" id="asal_sekolah" name="asal_sekolah" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="nisn">NISN</label>
+                <input type="text" id="nisn" name="nisn" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="jurusan">Pilih Jurusan</label>
+              <select id="jurusan" name="jurusan" class="form-control" required>
+                <option value="">Pilih jurusan</option>
+                <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
+                <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
+                <option value="Bahasa">Ilmu Bahasa Indonesia dan Budaya</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Konfirmasi -->
+          <div class="form-section">
+            <h2>Konfirmasi Pendaftaran</h2>
+            <div class="form-check">
+              <input type="checkbox" id="agreeData" class="form-check-input" required />
+              <label for="agreeData" class="form-check-label">Saya menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan</label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="agreeRules" class="form-check-input" required />
+              <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-back">Kembali</button>
+              <button type="submit" class="btn">Kirim Pendaftaran</button>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="nama_panggilan">Nama Panggilan</label>
-        <input type="text" id="nama_panggilan" name="nama_panggilan" class="form-control" required />
+
+      <!-- Pendaftar Tabel -->
+      <div id="list-tab" class="tab-content">
+        <div class="search-filter">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Cari pendaftar..." id="searchInput" />
+          </div>
+          <div class="filter-dropdown">
+            <select id="filterProgram">
+              <option value="">Semua Jurusan</option>
+              <option value="IPA">IPA</option>
+              <option value="IPS">IPS</option>
+              <option value="Bahasa">Bahasa</option>
+            </select>
+          </div>
+          <button class="btn" id="exportBtn"><i class="fas fa-download"></i> Export Data</button>
+        </div>
+
+        <div class="registrants-table-container">
+          <table class="registrants-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Lengkap</th>
+                <th>Alamat</th>
+                <th>Jenis Kelamin</th>
+                <th>Agama</th>
+                <th>Sekolah Asal</th>
+                <th>Jurusan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $conn = new mysqli("localhost", "root", "", "db_sekolah");
+              if ($conn->connect_error) {
+                echo "<tr><td colspan='7'>Gagal koneksi: " . $conn->connect_error . "</td></tr>";
+              } else {
+                $sql = "SELECT * FROM pendaftar ORDER BY id DESC";
+                $result = $conn->query($sql);
+                if ($result && $result->num_rows > 0) {
+                  $no = 1;
+                  while ($row = $result->fetch_assoc()) {
+                    echo "<tr>
+                            <td>" . $no++ . "</td>
+                            <td>" . htmlspecialchars($row['nama_lengkap']) . "</td>
+                            <td>" . htmlspecialchars($row['alamat']) . "</td>
+                            <td>" . htmlspecialchars($row['jenis_kelamin']) . "</td>
+                            <td>" . htmlspecialchars($row['agama']) . "</td>
+                            <td>" . htmlspecialchars($row['asal_sekolah']) . "</td>
+                            <td>" . htmlspecialchars($row['jurusan']) . "</td>
+                          </tr>";
+                  }
+                } else {
+                  echo "<tr><td colspan='7'>Belum ada pendaftar.</td></tr>";
+                }
+                $conn->close();
+              }
+              ?>
+            </tbody>
+          </table>
+
+          <div class="table-pagination">
+            <button class="btn btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
+            <button class="btn btn-pagination active">1</button>
+            <button class="btn btn-pagination">2</button>
+            <button class="btn btn-pagination">3</button>
+            <button class="btn btn-pagination"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="tempat_lahir">Tempat Lahir</label>
-        <input type="text" id="tempat_lahir" name="tempat_lahir" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label for="tanggal_lahir">Tanggal Lahir</label>
-        <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" required />
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="jenis_kelamin">Jenis Kelamin</label>
-        <select id="jenis_kelamin" name="jenis_kelamin" class="form-control" required>
-          <option value="">Pilih Jenis Kelamin</option>
-          <option value="Laki-laki">Laki-laki</option>
-          <option value="Perempuan">Perempuan</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="agama">Agama</label>
-        <select id="agama" name="agama" class="form-control" required>
-          <option value="">Pilih Agama</option>
-          <option value="Islam">Islam</option>
-          <option value="Kristen">Kristen</option>
-          <option value="Katolik">Katolik</option>
-          <option value="Hindu">Hindu</option>
-          <option value="Buddha">Buddha</option>
-          <option value="Konghucu">Konghucu</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="alamat">Alamat Lengkap</label>
-      <textarea id="alamat" name="alamat" class="form-control" rows="3" required></textarea>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="telepon">Nomor Telepon/HP</label>
-        <input type="tel" id="telepon" name="telepon" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" class="form-control" required />
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group">
-        <label for="asal_sekolah">Asal Sekolah</label>
-        <input type="text" id="asal_sekolah" name="asal_sekolah" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label for="nisn">NISN</label>
-        <input type="text" id="nisn" name="nisn" class="form-control" required />
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="jurusan">Pilih Jurusan</label>
-      <select id="jurusan" name="jurusan" class="form-control" required>
-        <option value="">Pilih jurusan</option>
-        <option value="IPA">Ilmu Pengetahuan Alam (IPA)</option>
-        <option value="IPS">Ilmu Pengetahuan Sosial (IPS)</option>
-        <option value="Bahasa">Ilmu Bahasa Indonesia dan Budaya</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Konfirmasi -->
-  <div class="form-section">
-    <h2>Konfirmasi Pendaftaran</h2>
-    <div class="form-check">
-      <input type="checkbox" id="agreeData" class="form-check-input" required />
-      <label for="agreeData" class="form-check-label">Saya menyatakan bahwa data yang diisi adalah benar dan dapat dipertanggungjawabkan</label>
-    </div>
-    <div class="form-check">
-      <input type="checkbox" id="agreeRules" class="form-check-input" required />
-      <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
-    </div>
-
-    <div class="form-actions">
-      <button type="button" class="btn btn-back">Kembali</button>
-      <button type="submit" class="btn">Kirim Pendaftaran</button>
-    </div>
-  </div>
-</form>
-
-
-     <!-- Pendaftar Tabel -->
-<div id="list-tab" class="tab-content">
-  <div class="search-filter">
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" placeholder="Cari pendaftar..." id="searchInput" />
-    </div>
-    <div class="filter-dropdown">
-      <select id="filterProgram">
-        <option value="">Semua Jurusan</option>
-        <option value="IPA">IPA</option>
-        <option value="IPS">IPS</option>
-        <option value="Bahasa">Bahasa</option>
-      </select>
-    </div>
-    <button class="btn" id="exportBtn"><i class="fas fa-download"></i> Export Data</button>
-  </div>
-
-  <div class="registrants-table-container">
-    <table class="registrants-table">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Lengkap</th>
-          <th>Alamat</th>
-          <th>Jenis Kelamin</th>
-          <th>Agama</th>
-          <th>Sekolah Asal</th>
-          <th>Jurusan</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        // Koneksi ke database
-        $conn = new mysqli("localhost", "root", "", "db_sekolah");
-
-        if ($conn->connect_error) {
-          echo "<tr><td colspan='7'>Gagal koneksi: " . $conn->connect_error . "</td></tr>";
-        } else {
-          $sql = "SELECT * FROM pendaftar ORDER BY id DESC";
-          $result = $conn->query($sql);
-
-          if ($result && $result->num_rows > 0) {
-            $no = 1;
-            while ($row = $result->fetch_assoc()) {
-              echo "<tr>
-                      <td>" . $no++ . "</td>
-                      <td>" . htmlspecialchars($row['nama_lengkap']) . "</td>
-                      <td>" . htmlspecialchars($row['alamat']) . "</td>
-                      <td>" . htmlspecialchars($row['jenis_kelamin']) . "</td>
-                      <td>" . htmlspecialchars($row['agama']) . "</td>
-                      <td>" . htmlspecialchars($row['asal_sekolah']) . "</td>
-                      <td>" . htmlspecialchars($row['jurusan']) . "</td>
-                    </tr>";
-            }
-          } else {
-            echo "<tr><td colspan='7'>Belum ada pendaftar.</td></tr>";
-          }
-
-          $conn->close();
-        }
-        ?>
-      </tbody>
-    </table>
-
-    <div class="table-pagination">
-      <button class="btn btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
-      <button class="btn btn-pagination active">1</button>
-      <button class="btn btn-pagination">2</button>
-      <button class="btn btn-pagination">3</button>
-      <button class="btn btn-pagination"><i class="fas fa-chevron-right"></i></button>
-    </div>
-  </div>
-</div>
-
-
     <!-- Footer -->
     <footer>
       <div class="container">
@@ -846,10 +983,8 @@
 
       // Export button functionality
       document.getElementById("exportBtn").addEventListener("click", function () {
-        alert("Data berhasil diekspor dalam format CSV");
-        // In a real implementation, this would generate and download a CSV file
+        window.location.href = window.location.pathname + "?export=excel";
       });
-
       
     </script>
   </body>
