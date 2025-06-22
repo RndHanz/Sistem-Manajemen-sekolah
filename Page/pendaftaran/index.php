@@ -653,65 +653,81 @@
 </form>
 
 
-      <!-- Pendaftar Tabel-->
-      <div id="list-tab" class="tab-content">
-        <div class="search-filter">
-          <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" placeholder="Cari pendaftar..." id="searchInput" />
-          </div>
-          <div class="filter-dropdown">
-            <select id="filterProgram">
-              <option value="">Semua Jurusan</option>
-              <option value="IPA">IPA</option>
-              <option value="IPS">IPS</option>
-              <option value="Bahasa">Bahasa</option>
-            </select>
-          </div>
-          <button class="btn" id="exportBtn"><i class="fas fa-download"></i> Export Data</button>
-        </div>
-
-        <div class="registrants-table-container">
-          <table class="registrants-table">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Nama Lengkap</th>
-                <th>Alamat</th>
-                <th>Jenis Kelamin</th>
-                <th>Agama</th>
-                <th>Sekolah Asal</th>
-                <th>Jurusan</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <?php
-    $conn = new mysqli("localhost", "root", "", "db_sekolah");
-    $result = $conn->query("SELECT * FROM pendaftar"); $no = 1; while ($row = $result->fetch_assoc()) { echo "
-              <tr>
-                <td>".$no++."</td>
-                <td>".$row['nama_lengkap']."</td>
-                <td>".$row['alamat']."</td>
-                <td>".$row['jenis_kelamin']."</td>
-                <td>".$row['agama']."</td>
-                <td>".$row['asal_sekolah']."</td>
-                <td>".$row['jurusan']."</td>
-              </tr>
-              "; } $conn->close(); ?>
-            </tbody>
-          </table>
-
-          <div class="table-pagination">
-            <button class="btn btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
-            <button class="btn btn-pagination active">1</button>
-            <button class="btn btn-pagination">2</button>
-            <button class="btn btn-pagination">3</button>
-            <button class="btn btn-pagination"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>
-      </div>
+     <!-- Pendaftar Tabel -->
+<div id="list-tab" class="tab-content">
+  <div class="search-filter">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Cari pendaftar..." id="searchInput" />
     </div>
+    <div class="filter-dropdown">
+      <select id="filterProgram">
+        <option value="">Semua Jurusan</option>
+        <option value="IPA">IPA</option>
+        <option value="IPS">IPS</option>
+        <option value="Bahasa">Bahasa</option>
+      </select>
+    </div>
+    <button class="btn" id="exportBtn"><i class="fas fa-download"></i> Export Data</button>
+  </div>
+
+  <div class="registrants-table-container">
+    <table class="registrants-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Lengkap</th>
+          <th>Alamat</th>
+          <th>Jenis Kelamin</th>
+          <th>Agama</th>
+          <th>Sekolah Asal</th>
+          <th>Jurusan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        // Koneksi ke database
+        $conn = new mysqli("localhost", "root", "", "db_sekolah");
+
+        if ($conn->connect_error) {
+          echo "<tr><td colspan='7'>Gagal koneksi: " . $conn->connect_error . "</td></tr>";
+        } else {
+          $sql = "SELECT * FROM pendaftar ORDER BY id DESC";
+          $result = $conn->query($sql);
+
+          if ($result && $result->num_rows > 0) {
+            $no = 1;
+            while ($row = $result->fetch_assoc()) {
+              echo "<tr>
+                      <td>" . $no++ . "</td>
+                      <td>" . htmlspecialchars($row['nama_lengkap']) . "</td>
+                      <td>" . htmlspecialchars($row['alamat']) . "</td>
+                      <td>" . htmlspecialchars($row['jenis_kelamin']) . "</td>
+                      <td>" . htmlspecialchars($row['agama']) . "</td>
+                      <td>" . htmlspecialchars($row['asal_sekolah']) . "</td>
+                      <td>" . htmlspecialchars($row['jurusan']) . "</td>
+                    </tr>";
+            }
+          } else {
+            echo "<tr><td colspan='7'>Belum ada pendaftar.</td></tr>";
+          }
+
+          $conn->close();
+        }
+        ?>
+      </tbody>
+    </table>
+
+    <div class="table-pagination">
+      <button class="btn btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
+      <button class="btn btn-pagination active">1</button>
+      <button class="btn btn-pagination">2</button>
+      <button class="btn btn-pagination">3</button>
+      <button class="btn btn-pagination"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
+
 
     <!-- Footer -->
     <footer>
