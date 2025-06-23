@@ -1,8 +1,14 @@
 <?php
+// WAJIB: Memulai session di baris paling atas
+session_start();
+
 // Proses form pendaftaran langsung di file ini
 $successMsg = $errorMsg = "";
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['nama_lengkap'])) {
+  // Ambil semua data dari form
   $nama_lengkap   = $_POST['nama_lengkap'] ?? '';
+  $email          = $_POST['email'] ?? '';
+  $password       = $_POST['password'] ?? ''; // Ambil password
   $nama_panggilan = $_POST['nama_panggilan'] ?? '';
   $tempat_lahir   = $_POST['tempat_lahir'] ?? '';
   $tanggal_lahir  = $_POST['tanggal_lahir'] ?? '';
@@ -10,75 +16,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $agama          = $_POST['agama'] ?? '';
   $alamat         = $_POST['alamat'] ?? '';
   $telepon        = $_POST['telepon'] ?? '';
-  $email          = $_POST['email'] ?? '';
   $asal_sekolah   = $_POST['asal_sekolah'] ?? '';
   $nisn           = $_POST['nisn'] ?? '';
   $jurusan        = $_POST['jurusan'] ?? '';
 
+  // Validasi sederhana
   if (
-    $nama_lengkap && $nama_panggilan && $tempat_lahir && $tanggal_lahir &&
-    $jenis_kelamin && $agama && $alamat && $telepon && $email &&
+    $nama_lengkap && $email && $password && $nama_panggilan && $tempat_lahir && 
+    $tanggal_lahir && $jenis_kelamin && $agama && $alamat && $telepon && 
     $asal_sekolah && $nisn && $jurusan
   ) {
     $conn = new mysqli("localhost", "root", "", "db_sekolah");
     if ($conn->connect_error) {
       $errorMsg = "Gagal koneksi ke database.";
     } else {
-      $stmt = $conn->prepare("INSERT INTO pendaftar (nama_lengkap, nama_panggilan, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, alamat, telepon, email, asal_sekolah, nisn, jurusan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param("ssssssssssss", $nama_lengkap, $nama_panggilan, $tempat_lahir, $tanggal_lahir, $jenis_kelamin, $agama, $alamat, $telepon, $email, $asal_sekolah, $nisn, $jurusan);
-      if ($stmt->execute()) {
-        // Redirect setelah submit agar tidak ada konfirmasi pengiriman ulang saat refresh
-        header("Location: " . strtok($_SERVER["REQUEST_URI"], '?') . "?success=1");
-        exit;
+      // 1. Buat akun di tabel 'users' terlebih dahulu
+      $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+      $stmt_user = $conn->prepare("INSERT INTO users (nama, email, password) VALUES (?, ?, ?)");
+      $stmt_user->bind_param("sss", $nama_lengkap, $email, $hashed_password);
+
+      if ($stmt_user->execute()) {
+        // 2. Ambil ID user yang baru dibuat
+        $new_user_id = $conn->insert_id;
+
+        // 3. Simpan data pendaftaran ke tabel 'pendaftar' dengan user_id yang sesuai
+        $stmt_pendaftar = $conn->prepare("INSERT INTO pendaftar (user_id, nama_lengkap, nama_panggilan, tempat_lahir, tanggal_lahir, jenis_kelamin, agama, alamat, telepon, email, asal_sekolah, nisn, jurusan) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt_pendaftar->bind_param("issssssssssss", $new_user_id, $nama_lengkap, $nama_panggilan, $tempat_lahir, $tanggal_lahir, $jenis_kelamin, $agama, $alamat, $telepon, $email, $asal_sekolah, $nisn, $jurusan);
+
+        if ($stmt_pendaftar->execute()) {
+          // Redirect setelah submit
+          header("Location: " . strtok($_SERVER["REQUEST_URI"], '?') . "?success=1");
+          exit;
+        } else {
+          $errorMsg = "Gagal menyimpan data pendaftaran. Silakan coba lagi.";
+        }
+        $stmt_pendaftar->close();
       } else {
-        $errorMsg = "Gagal menyimpan data. Silakan coba lagi.";
+        // Cek jika email sudah ada
+        if ($conn->errno == 1062) {
+          $errorMsg = "Email sudah terdaftar. Silakan gunakan email lain.";
+        } else {
+          $errorMsg = "Gagal membuat akun pengguna. Silakan coba lagi.";
+        }
       }
-      $stmt->close();
+      $stmt_user->close();
       $conn->close();
     }
   } else {
-    $errorMsg = "Semua field harus diisi.";
+    $errorMsg = "Semua field harus diisi, termasuk password.";
   }
-}
-
-// Export CSV jika diminta
-if (isset($_GET['export']) && $_GET['export'] === 'csv') {
-  header('Content-Type: text/csv; charset=utf-8');
-  header('Content-Disposition: attachment; filename=daftar_pendaftar.csv');
-  $output = fopen('php://output', 'w');
-  // Header kolom
-  fputcsv($output, [
-    'No', 'Nama Lengkap', 'Nama Panggilan', 'Tempat Lahir', 'Tanggal Lahir',
-    'Jenis Kelamin', 'Agama', 'Alamat', 'Telepon', 'Email', 'Sekolah Asal', 'NISN', 'Jurusan'
-  ]);
-  $conn = new mysqli("localhost", "root", "", "db_sekolah");
-  if (!$conn->connect_error) {
-    $sql = "SELECT * FROM pendaftar ORDER BY id DESC";
-    $result = $conn->query($sql);
-    if ($result && $result->num_rows > 0) {
-      $no = 1;
-      while ($row = $result->fetch_assoc()) {
-        fputcsv($output, [
-          $no++,
-          $row['nama_lengkap'],
-          $row['nama_panggilan'],
-          $row['tempat_lahir'],
-          $row['tanggal_lahir'],
-          $row['jenis_kelamin'],
-          $row['agama'],
-          $row['alamat'],
-          $row['telepon'],
-          $row['email'],
-          $row['asal_sekolah'],
-          $row['nisn'],
-          $row['jurusan']
-        ]);
-      }
-    }
-    $conn->close();
-  }
-  fclose($output);
-  exit;
 }
 
 // Export Excel jika diminta
@@ -133,18 +119,17 @@ if (isset($_GET['export']) && $_GET['export'] === 'excel') {
 
 // Tampilkan pesan sukses jika ada parameter success di URL
 if (isset($_GET['success']) && $_GET['success'] == 1) {
-  $successMsg = "Pendaftaran berhasil! Data Anda telah masuk ke daftar pendaftar.";
+  $successMsg = "Pendaftaran berhasil! Akun Anda telah dibuat. Silakan login untuk melihat data Anda.";
 }
 ?>
 <!DOCTYPE html>
 <html lang="id">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pendaftaran Siswa Baru - SMA 01 Elit Harapan Bangsa</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="../../styles.css" />
-
     <style>
       :root {
         --primary-color: #004080;
@@ -606,30 +591,42 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
         }
       }
     </style>
-  </head>
-  <body>
-    <!-- Header Section -->
+</head>
+<body>
+    
     <header>
       <div class="container header-container">
         <div class="logo">
           <img src="../../img/Logo 1.png" alt="School Logo" />
           <div class="logo-text">
-            <h1>SMA 01 ELITE HARAPAN BANGSA</h1>
+            <h1>SMA 01 Elit Harapan Bangsa</h1>
             <p>Sekolah Berprestasi, Berkarakter, dan Berwawasan Global</p>
           </div>
         </div>
-
         <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-
         <nav id="mainNav">
           <ul>
-            <li><a href="../../index.html#home">Beranda</a></li>
-            <li><a href="../../index.html#profile">Profil Sekolah</a></li>
-            <li><a href="../../index.html#news">Berita</a></li>
-            <li><a href="../../index.html#gallery">Galeri</a></li>
-            <li><a href="../../index.html#calendar">Kalender</a></li>
-            <li><a href="../../index.html#registration">Pendaftaran</a></li>
-            <li><a href="../../index.html#blog">Blog</a></li>
+            <li><a href="../../index.php#home">Beranda</a></li>
+            <li><a href="../../index.php#profile">Profil Sekolah</a></li>
+            <li><a href="../../index.php#news">Berita</a></li>
+            <li><a href="../../index.php#gallery">Galeri</a></li>
+            <li><a href="../../index.php#calendar">Kalender</a></li>
+            <li><a href="#">Pendaftaran</a></li>
+            <li><a href="../../index.php#blog">Blog</a></li>
+
+            <?php if (isset($_SESSION['user_id'])): ?>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" id="dropdownToggle">
+                  <i class="fas fa-user-circle"></i> Halo, <?php echo htmlspecialchars(strtok($_SESSION['user_nama'], ' ')); ?> <i class="fas fa-caret-down"></i>
+                </a>
+                <ul class="dropdown-menu" id="dropdownMenu">
+                  <li><a href="../profile/profile.php">Profil Saya</a></li>
+                  <li><a href="../../logout.php">Logout</a></li>
+                </ul>
+              </li>
+            <?php else: ?>
+              <li><a href="#" class="btn-login" id="loginModalBtn">Login</a></li>
+            <?php endif; ?>
           </ul>
         </nav>
       </div>
@@ -642,7 +639,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
       </div>
     </section>
 
-    <!-- Registration Steps -->
     <div class="container">
       <div class="registration-steps">
         <div class="step active">
@@ -650,7 +646,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
           <h3>Data Pribadi</h3>
           <p>Isi formulir data diri</p>
         </div>
-
         <div class="step">
           <div class="step-number">2</div>
           <h3>Konfirmasi</h3>
@@ -659,16 +654,13 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
       </div>
     </div>
 
-    <!-- Registration Container with Tabs -->
     <div class="registration-container">
       <div class="registration-tabs">
         <button class="tab-btn active" data-tab="form">Form Pendaftaran</button>
         <button class="tab-btn" data-tab="list">Daftar Pendaftar</button>
       </div>
 
-      <!-- Form Tab Content -->
       <div id="form-tab" class="tab-content active">
-        <!-- Pesan sukses/gagal -->
         <?php if (!empty($successMsg)): ?>
           <div style="background:#d4edda;color:#155724;padding:12px;border-radius:6px;margin-bottom:15px;"><?php echo $successMsg; ?></div>
         <?php endif; ?>
@@ -688,10 +680,8 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
           <p><strong>Pendaftaran Gelombang 1:</strong> 1 Juni - 30 Juli 2025</p>
         </div>
         <form id="registrationForm" method="POST" action="">
-          <!-- Data Pribadi -->
           <div class="form-section">
             <h2>Data Pribadi Calon Siswa</h2>
-
             <div class="form-row">
               <div class="form-group">
                 <label for="nama_lengkap">Nama Lengkap</label>
@@ -702,7 +692,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                 <input type="text" id="nama_panggilan" name="nama_panggilan" class="form-control" required />
               </div>
             </div>
-
             <div class="form-row">
               <div class="form-group">
                 <label for="tempat_lahir">Tempat Lahir</label>
@@ -713,7 +702,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                 <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control" required />
               </div>
             </div>
-
             <div class="form-row">
               <div class="form-group">
                 <label for="jenis_kelamin">Jenis Kelamin</label>
@@ -736,12 +724,10 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                 </select>
               </div>
             </div>
-
             <div class="form-group">
               <label for="alamat">Alamat Lengkap</label>
               <textarea id="alamat" name="alamat" class="form-control" rows="3" required></textarea>
             </div>
-
             <div class="form-row">
               <div class="form-group">
                 <label for="telepon">Nomor Telepon/HP</label>
@@ -752,7 +738,11 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                 <input type="email" id="email" name="email" class="form-control" required />
               </div>
             </div>
-
+            <div class="form-row">
+              <div class="form-group" style="flex: 2;"> <label for="password">Password Akun</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Buat password untuk login" required />
+              </div>
+            </div>
             <div class="form-row">
               <div class="form-group">
                 <label for="asal_sekolah">Asal Sekolah</label>
@@ -763,7 +753,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
                 <input type="text" id="nisn" name="nisn" class="form-control" required />
               </div>
             </div>
-
             <div class="form-group">
               <label for="jurusan">Pilih Jurusan</label>
               <select id="jurusan" name="jurusan" class="form-control" required>
@@ -774,8 +763,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
               </select>
             </div>
           </div>
-
-          <!-- Konfirmasi -->
           <div class="form-section">
             <h2>Konfirmasi Pendaftaran</h2>
             <div class="form-check">
@@ -786,7 +773,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
               <input type="checkbox" id="agreeRules" class="form-check-input" required />
               <label for="agreeRules" class="form-check-label">Saya bersedia mematuhi semua peraturan dan tata tertib SMA 01 Elit Harapan Bangsa</label>
             </div>
-
             <div class="form-actions">
               <button type="button" class="btn btn-back">Kembali</button>
               <button type="submit" class="btn">Kirim Pendaftaran</button>
@@ -795,7 +781,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
         </form>
       </div>
 
-      <!-- Pendaftar Tabel -->
       <div id="list-tab" class="tab-content">
         <div class="search-filter">
           <div class="search-box">
@@ -812,7 +797,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
           </div>
           <button class="btn" id="exportBtn"><i class="fas fa-download"></i> Export Data</button>
         </div>
-
         <div class="registrants-table-container">
           <table class="registrants-table">
             <thead>
@@ -855,17 +839,41 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
               ?>
             </tbody>
           </table>
-
           <div class="table-pagination">
             <button class="btn btn-pagination" disabled><i class="fas fa-chevron-left"></i></button>
             <button class="btn btn-pagination active">1</button>
-       
             <button class="btn btn-pagination"><i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
       </div>
     </div>
-    <!-- Footer -->
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="closeLoginModal">&times;</button>
+            <div class="login-container">
+                <img src="../../img/Logo 1.png" alt="Logo Sekolah" class="modal-logo">
+                <h1>Login Siswa</h1>
+                <div id="loginError" class="error-msg" style="display: none;"></div>
+                <form action="../../proses_login.php" method="POST">
+                    <div class="form-group">
+                        <label for="email_login">Email</label>
+                        <input type="email" id="email_login" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_login">Password</label>
+                        <input type="password" id="password_login" name="password" required>
+                    </div>
+                    <input type="hidden" name="redirect_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                    <button type="submit" class="btn">Login</button>
+                </form>
+                <div class="register-link">
+                    <p>Belum punya akun? <a href="#">Daftar di sini</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
       <div class="container">
         <div class="footer-container">
@@ -879,7 +887,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
               <a target="_blank" href="https://www.youtube.com/@mercutvofficial"><i class="fab fa-youtube"></i></a>
             </div>
           </div>
-
           <div class="footer-col">
             <h3>Link Cepat</h3>
             <ul class="footer-links">
@@ -892,7 +899,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
               <li><a href="#blog">Blog</a></li>
             </ul>
           </div>
-
           <div class="footer-col">
             <h3>Kontak Kami</h3>
             <p><i class="fas fa-map-marker-alt"></i> Jl elite. Pendidikan No. 123, Kota jakarta elite</p>
@@ -900,7 +906,6 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
             <p><i class="fas fa-envelope"></i> info@sma01elite.sch.id</p>
             <p><i class="fas fa-clock"></i> Senin-Jumat: 07.00 - 16.00 WIB</p>
           </div>
-
           <div class="footer-col">
             <h3>Peta Lokasi</h3>
             <iframe
@@ -913,78 +918,62 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
             ></iframe>
           </div>
         </div>
-
         <div class="footer-bottom">
-          <p>&copy; 2025 SMA 01 ELITE HARAPAN BANGSA. Semua Hak Dilindungi.</p>
+          <p>© 2025 SMA 01 ELITE HARAPAN BANGSA. Semua Hak Dilindungi.</p>
         </div>
       </div>
     </footer>
 
     <script>
-      // Mobile Menu Toggle
-      document.getElementById("mobileMenuBtn").addEventListener("click", function () {
-        const nav = document.getElementById("mainNav").querySelector("ul");
-        nav.classList.toggle("show");
+    // Tab functionality
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const tabId = this.getAttribute("data-tab");
+        tabBtns.forEach((btn) => btn.classList.remove("active"));
+        tabContents.forEach((content) => content.classList.remove("active"));
+        this.classList.add("active");
+        document.getElementById(`${tabId}-tab`).classList.add("active");
       });
+    });
 
-      // Tab functionality
-      const tabBtns = document.querySelectorAll(".tab-btn");
-      const tabContents = document.querySelectorAll(".tab-content");
-
-      tabBtns.forEach((btn) => {
-        btn.addEventListener("click", function () {
-          const tabId = this.getAttribute("data-tab");
-
-          // Remove active class from all buttons and contents
-          tabBtns.forEach((btn) => btn.classList.remove("active"));
-          tabContents.forEach((content) => content.classList.remove("active"));
-
-          // Add active class to clicked button and corresponding content
-          this.classList.add("active");
-          document.getElementById(`${tabId}-tab`).classList.add("active");
-        });
+    // Search functionality
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("keyup", function () {
+      const searchTerm = this.value.toLowerCase();
+      const rows = document.querySelectorAll(".registrants-table tbody tr");
+      rows.forEach((row) => {
+        const name = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
+        const school = row.querySelector("td:nth-child(6)").textContent.toLowerCase();
+        if (name.includes(searchTerm) || school.includes(searchTerm)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
       });
+    });
 
-      // Search functionality
-      const searchInput = document.getElementById("searchInput");
-      searchInput.addEventListener("keyup", function () {
-        const searchTerm = this.value.toLowerCase();
-        const rows = document.querySelectorAll(".registrants-table tbody tr");
-
-        rows.forEach((row) => {
-          const name = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
-          const school = row.querySelector("td:nth-child(6)").textContent.toLowerCase();
-
-          if (name.includes(searchTerm) || school.includes(searchTerm)) {
-            row.style.display = "";
-          } else {
-            row.style.display = "none";
-          }
-        });
+    // Filter functionality
+    const filterProgram = document.getElementById("filterProgram");
+    filterProgram.addEventListener("change", function () {
+      const selectedProgram = this.value;
+      const rows = document.querySelectorAll(".registrants-table tbody tr");
+      rows.forEach((row) => {
+        const program = row.querySelector("td:nth-child(7)").textContent;
+        if (selectedProgram === "" || program === selectedProgram) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
       });
+    });
 
-      // Filter functionality
-      const filterProgram = document.getElementById("filterProgram");
-      filterProgram.addEventListener("change", function () {
-        const selectedProgram = this.value;
-        const rows = document.querySelectorAll(".registrants-table tbody tr");
-
-        rows.forEach((row) => {
-          const program = row.querySelector("td:nth-child(7)").textContent;
-
-          if (selectedProgram === "" || program === selectedProgram) {
-            row.style.display = "";
-          } else {
-            row.style.display = "none";
-          }
-        });
-      });
-
-      // Export button functionality
-      document.getElementById("exportBtn").addEventListener("click", function () {
-        window.location.href = window.location.pathname + "?export=excel";
-      });
-      
-    </script>
-  </body>
+    // Export button functionality
+    document.getElementById("exportBtn").addEventListener("click", function () {
+      window.location.href = window.location.pathname + "?export=excel";
+    });
+</script>
+<script src="../../script.js" defer></script>
+</body>
 </html>
