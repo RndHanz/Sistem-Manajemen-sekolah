@@ -1,10 +1,16 @@
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="id">
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SMA 01 ELITE HARAPAN BANGSA</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
   </head>
@@ -23,16 +29,30 @@
         <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
 
         <nav id="mainNav">
-          <ul>
-            <li><a href="#home">Beranda</a></li>
-            <li><a href="#profile">Profil Sekolah</a></li>
-            <li><a href="#news">Berita</a></li>
-            <li><a href="#gallery">Galeri</a></li>
-            <li><a href="#calendar">Kalender</a></li>
-            <li><a href="#registration">Pendaftaran</a></li>
-            <li><a href="#blog">Blog</a></li>
-          </ul>
-        </nav>
+  <ul>
+    <li><a href="#home">Beranda</a></li>
+    <li><a href="#profile">Profil Sekolah</a></li>
+    <li><a href="#news">Berita</a></li>
+    <li><a href="#gallery">Galeri</a></li>
+    <li><a href="#calendar">Kalender</a></li>
+    <li><a href="#registration">Pendaftaran</a></li>
+    <li><a href="#blog">Blog</a></li>
+
+    <?php if (isset($_SESSION['user_id'])): ?>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" id="dropdownToggle">
+          <i class="fas fa-user-circle"></i> Halo, <?php echo htmlspecialchars(strtok($_SESSION['user_nama'], ' ')); ?> <i class="fas fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu" id="dropdownMenu">
+          <li><a href="Page/profile/profile.php">Profil Saya</a></li>
+          <li><a href="logout.php">Logout</a></li>
+        </ul>
+      </li>
+    <?php else: ?>
+  <li><a href="#" class="btn-login" id="loginModalBtn">Login</a></li>
+<?php endif; ?>
+  </ul>
+</nav>
       </div>
     </header>
 
@@ -41,6 +61,16 @@
       <!-- Hero Section -->
       <section class="hero" id="home">
         <div class="container">
+
+            <?php
+            if (isset($_GET['status']) && $_GET['status'] == 'deletesuccess') {
+                echo "<div class='alert success'>
+                        <span><strong>Sukses!</strong> Akun dan data pendaftaran Anda telah berhasil dihapus.</span>
+                        <button class='alert-close' onclick='this.parentElement.style.display=\"none\";'>&times;</button>
+                      </div>";
+            }
+            ?>
+
           <div class="hero-content">
             <h1>Selamat Datang di SMA 01 Elit Harapan Bangsa</h1>
             <p>Sekolah unggulan yang berkomitmen untuk memberikan pendidikan terbaik bagi generasi penerus bangsa.</p>
@@ -60,7 +90,7 @@
               <p>Visi kami adalah "Mewujudkan generasi muda yang cerdas, berkarakter, dan berwawasan global". Misi kami adalah memberikan pendidikan berkualitas, mengembangkan potensi siswa, dan membentuk karakter yang baik.</p>
               <p>Fasilitas yang kami miliki antara lain: laboratorium komputer, laboratorium IPA, perpustakaan digital, lapangan olahraga, ruang multimedia, dan ruang kesenian.</p>
               <br>
-              <a href="./Page/profile/profile.html" class="btn">Baca Selengkapnya</a>
+              <a href="./Page/profil_sekolah/profile_sekolah.php" class="btn">Baca Selengkapnya</a>
             </div>
             <div class="about-image">
               <img src="./img/profile.jpg" style="width: 90%;" talt="Sekolah" />
@@ -131,7 +161,7 @@
                 <h3>Upacara Bendera Memperingati Hari Kemerdekaan</h3>
                 <p>Siswa-siswi SMA 01 Elit Harapan Bangsa mengikuti upacara bendera untuk memperingati Hari Kemerdekaan RI ke-78.</p>
                 <br>
-                <a href="./Page/Berita/berita-1.html" class="btn">Baca Selengkapnya</a>
+                <a href="./Page/Berita/berita-1.php" class="btn">Baca Selengkapnya</a>
               </div>
             </div>
             <div class="news-card">
@@ -143,7 +173,7 @@
                 <h3>Juara Olimpiade Matematika Tingkat Provinsi</h3>
                 <p>Siswa kami, Andi Pratama, berhasil meraih juara 1 Olimpiade Matematika Tingkat Provinsi tahun 2023.</p>
                 <br>
-                <a href="./Page/Berita/berita-2.html" class="btn">Baca Selengkapnya</a>
+                <a href="./Page/Berita/berita-2.php" class="btn">Baca Selengkapnya</a>
               </div>
             </div>
             <div class="news-card">
@@ -155,7 +185,7 @@
                 <h3>Kegiatan Bakti Sosial ke Panti Asuhan</h3>
                 <p>OSIS SMA 01 Elit Harapan Bangsa mengadakan kegiatan bakti sosial ke panti asuhan sebagai bentuk kepedulian sosial.</p>
                 <br>
-                <a href="Page/Berita/berita-3.html" class="btn">Baca Selengkapnya</a>
+                <a href="Page/Berita/berita-3.php" class="btn">Baca Selengkapnya</a>
               </div>
             </div>
           </div>
@@ -277,7 +307,7 @@
                         </div>
                         <h3>Tips Belajar Matematika dengan Menyenangkan</h3>
                         <p class="blog-excerpt">Matematika sering dianggap sebagai pelajaran yang menakutkan. Namun dengan pendekatan yang tepat, matematika bisa menjadi sangat menyenangkan...</p>
-                        <a href="./Page/blog/blog-1.html" class="btn">Baca Selengkapnya</a>
+                        <a href="./Page/blog/blog-1.php" class="btn">Baca Selengkapnya</a>
                     </div>
                 </div>
                 
@@ -292,7 +322,7 @@
                         </div>
                         <h3>Pengalaman Mengikuti Olimpiade Matematika</h3>
                         <p class="blog-excerpt">Awalnya saya tidak percaya diri untuk mengikuti olimpiade matematika. Namun dengan dukungan guru dan latihan rutin, akhirnya saya bisa meraih juara...</p>
-                        <a href="./Page/blog/blog-2.html" class="btn">Baca Selengkapnya</a>
+                        <a href="./Page/blog/blog-2.php" class="btn">Baca Selengkapnya</a>
                     </div>
                 </div>
                 
@@ -307,7 +337,7 @@
                         </div>
                         <h3>Pentingnya Pendidikan Karakter di Sekolah</h3>
                         <p class="blog-excerpt">Selain akademik, pendidikan karakter juga sangat penting untuk membentuk pribadi siswa yang berakhlak mulia dan bertanggung jawab...</p>
-                        <a href="./Page/blog/blog-3.html" class="btn">Baca Selengkapnya</a>
+                        <a href="./Page/blog/blog-3.php" class="btn">Baca Selengkapnya</a>
                     </div>
                 </div>
             </div>
@@ -317,7 +347,32 @@
     </section>
 </main>
 
+<div id="loginModal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close" id="closeLoginModal">&times;</button>
+        <div class="login-container">
+    <img src="img/Logo 1.png" alt="Logo Sekolah" class="modal-logo">
+    <h1>Login Siswa</h1>
+            <div id="loginError" class="error-msg" style="display: none;"></div>
 
+            <form action="proses_login.php" method="POST">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <input type="hidden" name="redirect_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <div class="register-link">
+                <p>Belum punya akun? <a href="Page/pendaftaran/index.php">Daftar di sini</a></p>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Footer -->
