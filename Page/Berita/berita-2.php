@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -10,28 +13,44 @@
   <body>
     <!-- Header -->
     <header>
-      <div class="container header-container">
-        <div class="logo">
-          <img src="../../img/Logo 1.png" alt="School Logo" />
-          <div class="logo-text">
-            <h1>SMA 01 Elit Harapan Bangsa</h1>
-            <p>Sekolah Berprestasi, Berkarakter, dan Berwawasan Global</p>
-          </div>
-        </div>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-        <nav id="mainNav">
-          <ul>
-            <li><a href="../../index.html#home">Beranda</a></li>
-            <li><a href="../../index.html#profile">Profil Sekolah</a></li>
-            <li><a href="../../index.html#news">Berita</a></li>
-            <li><a href="../../index.html#gallery">Galeri</a></li>
-            <li><a href="../../index.html#calendar">Kalender</a></li>
-            <li><a href="../../index.html#registration">Pendaftaran</a></li>
-            <li><a href="../../index.html#blog">Blog</a></li>
-          </ul>
-        </nav>
+  <div class="container header-container">
+    <div class="logo">
+      <img src="../../img/Logo 1.png" alt="School Logo" />
+      <div class="logo-text">
+        <h1>SMA 01 ELITE HARAPAN BANGSA</h1>
+        <p>Sekolah Berprestasi, Berkarakter, dan Berwawasan Global</p>
       </div>
-    </header>
+    </div>
+
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+
+    <nav id="mainNav">
+      <ul>
+        <li><a href="../../index.php#home">Beranda</a></li>
+        <li><a href="../../index.php#profile">Profil Sekolah</a></li>
+        <li><a href="../../index.php#news">Berita</a></li>
+        <li><a href="../../index.php#gallery">Galeri</a></li>
+        <li><a href="../../index.php#calendar">Kalender</a></li>
+        <li><a href="../../index.php#registration">Pendaftaran</a></li>
+        <li><a href="../../index.php#blog">Blog</a></li>
+
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" id="dropdownToggle">
+              <i class="fas fa-user-circle"></i> Halo, <?php echo htmlspecialchars(strtok($_SESSION['user_nama'], ' ')); ?> <i class="fas fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu" id="dropdownMenu">
+              <li><a href="../profile/profile.php">Profil Saya</a></li>
+              <li><a href="../../logout.php">Logout</a></li>
+            </ul>
+          </li>
+        <?php else: ?>
+          <li><a href="#" class="btn-login" id="loginModalBtn">Login</a></li>
+        <?php endif; ?>
+      </ul>
+    </nav>
+  </div>
+</header>
 
     <!-- Konten Berita -->
     <main class="section-padding" style="margin-top: 100px">
@@ -60,6 +79,32 @@
         </p>
       </div>
     </main>
+    <div id="loginModal" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close" id="closeLoginModal">×</button>
+        <div class="login-container">
+          <img src="../../img/Logo 1.png" alt="Logo Sekolah" class="modal-logo">
+          <h1>Login Siswa</h1>
+          <div id="loginError" class="error-msg" style="display: none;"></div>
+    
+          <form action="../../proses_login.php" method="POST">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+            <input type="hidden" name="redirect_url" value="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+            <button type="submit" class="btn">Login</button>
+          </form>
+          <div class="register-link">
+            <p>Belum punya akun? <a href="../pendaftaran/index.php">Daftar di sini</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -111,9 +156,10 @@
         </div>
 
         <div class="footer-bottom">
-          <p>&copy; 2023 SMP Negeri 1 Maju Jaya. Semua Hak Dilindungi.</p>
-        </div>
+  <p>© 2025 SMA 01 ELITE HARAPAN BANGSA. Semua Hak Dilindungi.</p>
+</div>
       </div>
     </footer>
+    <script src="../../script.js" defer></script>
   </body>
 </html>
