@@ -108,6 +108,7 @@ header {
 .logo-text h1 {
   font-size: 1.5rem;
   color: white;
+  white-space: nowrap; 
 }
 
 .logo-text p {
@@ -117,6 +118,7 @@ header {
 
 nav ul {
   display: flex;
+  align-items: center;
 }
 
 nav ul li {
@@ -129,6 +131,7 @@ nav ul li a {
   padding: 5px 10px;
   border-radius: 5px;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 nav ul li a:hover {
@@ -840,4 +843,263 @@ footer {
   .chatbot-window {
     width: 300px;
   }
+}
+/* ... (tambahkan di bagian akhir file) ... */
+
+/* Style untuk Tombol Login */
+.btn-login {
+  background-color: var(--accent-color);
+  color: white !important; /* Pakai !important untuk memastikan warnanya putih */
+  padding: 8px 15px !important;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover {
+  background-color: #c0392b !important; /* Warna hover sedikit lebih gelap */
+  color: white !important;
+}
+
+/* Style untuk Dropdown Menu di Navigasi */
+nav ul li.dropdown {
+  position: relative;
+}
+
+nav ul li a.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Jarak antara ikon, nama, dan panah */
+}
+
+ul.dropdown-menu {
+  display: none; /* Sembunyikan secara default */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 5px;
+  padding: 10px 0;
+  list-style: none;
+  flex-direction: column; /* Ubah orientasi jadi kolom */
+}
+
+ul.dropdown-menu.show {
+  display: block; /* Tampilkan saat class 'show' ditambahkan oleh JavaScript */
+}
+
+ul.dropdown-menu li {
+  margin: 0;
+  width: 100%;
+}
+
+ul.dropdown-menu li a {
+  color: var(--dark-color); /* Warna teks item dropdown */
+  padding: 12px 20px;
+  display: block; /* Buat link memenuhi lebar li */
+  width: 100%;
+  text-align: left;
+}
+
+ul.dropdown-menu li a:hover {
+  background-color: #f1f1f1; /* Warna hover item dropdown */
+  color: var(--primary-color);
+}
+
+/* ===== STYLE BARU UNTUK MODAL LOGIN YANG LEBIH MODERN ===== */
+
+/* Lapisan latar belakang gelap (tetap sama) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Efek blur untuk background */
+}
+
+/* Kotak konten modal */
+.modal-content {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px; /* Sudut lebih tumpul */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    animation: slide-down 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-align: center; /* Membuat semua konten di tengah */
+}
+
+/* Logo di dalam modal */
+.modal-logo {
+    width: 70px; /* Atur ukuran logo */
+    height: 70px;
+    margin-bottom: 15px;
+}
+
+/* Judul "Login Siswa" */
+.modal-content h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Grup Form (Label + Input) */
+.modal-content .form-group {
+    margin-bottom: 18px;
+    text-align: left; /* Label dan input rata kiri */
+}
+
+.modal-content .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Styling untuk Input field */
+.modal-content .form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Sudut lebih tumpul */
+    font-size: 16px;
+    transition: all 0.3s ease; /* Transisi halus */
+}
+
+/* Efek saat input diklik/aktif */
+.modal-content .form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color, #0056b3); /* Gunakan warna utama sekolah Anda */
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+}
+
+/* Tombol Login Utama */
+.modal-content .btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: var(--primary-color, #0056b3); /* Warna utama */
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 86, 179, 0.2);
+}
+
+/* Efek saat cursor di atas tombol */
+.modal-content .btn:hover {
+    transform: translateY(-2px); /* Tombol sedikit terangkat */
+    background-color: var(--secondary-color, #004494); /* Warna lebih gelap */
+    box-shadow: 0 6px 20px rgba(0, 86, 179, 0.3);
+}
+
+/* Link untuk daftar */
+.modal-content .register-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.modal-content .register-link a {
+    color: var(--primary-color, #0056b3);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.modal-content .register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Tombol close (X) */
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    color: #aaa;
+    transition: all 0.3s ease;
+    /* ... sisa style modal-close ... */
+}
+.modal-close:hover {
+    color: #333;
+    transform: rotate(90deg); /* Efek putar saat di-hover */
+}
+
+/* Pesan error */
+.modal-content .error-msg { 
+    /* ... style error-msg yang sudah ada ... */
+    margin-top: -10px; /* Posisikan lebih baik */
+}
+
+/* Animasi saat modal muncul */
+@keyframes slide-down {
+    from {
+        transform: translateY(-30px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.alert {
+    /* --- Bagian Posisi & Ukuran --- */
+    position: fixed;            /* MEMBUAT POSISI MENEMPEL DI LAYAR */
+    top: 20px;                  /* Jarak 20px dari atas layar */
+    left: 50%;                  /* Posisi horizontal di tengah */
+    transform: translateX(-50%); /* Trik untuk sentralisasi horizontal */
+    width: 90%;                 /* Lebar 90% dari layar */
+    max-width: 600px;           /* Lebar maksimal 600px */
+    z-index: 2000;              /* Pastikan selalu paling depan, di atas header */
+
+    /* --- Bagian Tampilan --- */
+    padding: 18px 25px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Tambah bayangan agar lebih menonjol */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    /* --- Bagian Animasi --- */
+     animation: alertSlideDown 0.5s ease-out forwards;
+}
+
+.alert.success { background-color: #2ecc71; }
+.alert.error { background-color: #e74c3c; }
+
+.alert-close {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+/* KODE UNTUK ANIMASI DARI ATAS (KEYFRAMES) */
+@keyframes alertSlideDown {
+    from {
+        /* Posisi awal: di atas layar dan transparan */
+        top: -100px;
+        opacity: 0;
+    }
+    to {
+        /* Posisi akhir: 20px dari atas dan terlihat jelas */
+        top: 20px;
+        opacity: 1;
+    }
 }
